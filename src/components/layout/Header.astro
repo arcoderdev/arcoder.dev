@@ -1,0 +1,78 @@
+---
+import Image from "astro/components/Image.astro";
+import { Menu } from "@lucide/astro";
+
+interface Props {
+    variant: "primary" | "secondary";
+}
+
+const items = [
+    {
+        href: "/",
+        label: "Inicio",
+    },
+    {
+        href: "/projects/",
+        label: "Proyectos",
+    },
+    {
+        href: "/about/",
+        label: "Nosotros",
+    },
+];
+
+const variantClass = {
+    primary:
+        "text-white bg-blue-page-900 hover:bg-blue-page-700 active:bg-blue-page-700",
+    secondary:
+        "text-blue-page-900 bg-white hover:bg-blue-page-700 hover:text-white active:bg-blue-page-700 active:text-white",
+};
+
+const { variant = "primary" } = Astro.props;
+
+const pathname = Astro.url.pathname;
+---
+
+<header class="w-full max-w-312 flex items-center justify-between mx-auto">
+    <a href="/">
+        <Image
+            src="/arcoder-logo.svg"
+            alt="Logo de ARcoder.dev"
+            width={69}
+            height={41}
+            class={"aspect-69/41 w-13.5 h-8 md:w-14 md:h-8.25 lg:w-17.25 lg:h-10.25"}
+        />
+    </a>
+    <nav class="hidden md:block">
+        <ul class="flex gap-8">
+            {
+                items.map((item, index) => (
+                    <li>
+                        <a
+                            href={item.href}
+                            class={`px-3 py-1 font-medium text-base text-white ${
+                                pathname === item.href
+                                    ? "underline"
+                                    : "hover:underline"
+                            }`}
+                        >
+                            {item.label}
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+    </nav>
+    <div class="flex items-center justify-center gap-5">
+        <a
+            href="#"
+            class:list={[
+                "px-3 py-2 md:px-5 md:py-3 rounded-full font-medium text-center transition duration-500 ease-in-out",
+                variantClass[variant],
+            ]}>Hablemos de tu proyecto</a
+        >
+        <button class="cursor-pointer md:hidden">
+            <Menu class="stroke-white size-8 transition-all transform" />
+        </button>
+    </div>
+</header>

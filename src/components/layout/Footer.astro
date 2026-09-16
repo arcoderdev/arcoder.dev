@@ -1,0 +1,107 @@
+---
+import { Image } from "astro:assets";
+import footerImage from "@assets/footer-image.png";
+import { footerContent } from "@data/footer.ts";
+
+const { website_name, website_tagline, navigation_items, social_links } =
+    footerContent;
+---
+
+<footer class="bg-blue-page-900">
+    <div
+        class="relative overflow-hidden max-w-360 mx-auto container_footer text-white px-6 md:px-7 pt-8 pb-11 lg:px-24 lg:pt-16 lg:pb-6 flex flex-col items-start justify-center gap-20 md:gap-24 w-full"
+    >
+        <div
+            class="container_footer_top flex flex-col items-center justify-center w-full gap-16 md:gap-24"
+        >
+            <div
+                class="footer_title w-full flex flex-col items-start overflow-hidden"
+            >
+                <svg
+                    viewBox="0 0 1000 125"
+                    class="w-full h-auto select-none"
+                    aria-label={website_name}
+                >
+                    <text
+                        x="0"
+                        y="95"
+                        textLength="100%"
+                        lengthAdjust="spacing"
+                        class="fill-white font-bold uppercase font-['Poppins']"
+                        font-size="120"
+                        letter-spacing="0"
+                    >
+                        {website_name}
+                    </text>
+                </svg>
+
+                <small
+                    class="text-base w-full lg:text-2xl font-medium text-blue-page-500"
+                    >{website_tagline}</small
+                >
+            </div>
+            <nav
+                class="footer_navigation w-full flex flex-wrap items-start justify-start gap-y-16 gap-x-15 lg:gap-x-20.5"
+            >
+                {
+                    navigation_items.map((section) => (
+                        <div class="footer_column flex flex-col gap-6 w-full md:max-w-59.25">
+                            <div class="footer_column_title w-full">
+                                <p class="font-bold text-xl uppercase">
+                                    {section.display_name}
+                                </p>
+                                <hr class="w-8 text-white" />
+                            </div>
+                            <ul class="flex flex-col gap-6">
+                                {section.pages_links.map((link) => (
+                                    <li class="">
+                                        <a
+                                            href={link.url}
+                                            class="text-base font-normal hover:underline hover:text-blue-page-100 transition ease-in duration-150"
+                                            title={link.display_name}
+                                        >
+                                            {link.display_name}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))
+                }
+            </nav>
+        </div>
+        <div
+            class="container_footer_bottom text-white w-full flex items-start flex-col gap-11"
+        >
+            <hr
+                class="w-full md:max-w-102.25 xl:max-w-167 text-blue-page-600"
+            />
+            <div class="footer_social_navigation flex flex-col gap-6 md:gap-11">
+                <ul class="flex flex-row gap-4 md:gap-8">
+                    {
+                        social_links.map(
+                            ({ display_name, icon: Icon, url }) => (
+                                <li>
+                                    <a href={url} class="" title={display_name}>
+                                        <Icon class="w-8 h-8 fill-current text-white opacity-50 hover:opacity-100 transition-opacity duration-300 ease-in" />
+                                    </a>
+                                </li>
+                            ),
+                        )
+                    }
+                </ul>
+                <p class="text-base text-blue-page-100 z-10">
+                    &copy; 2026 {website_name}. Todos los derechos reservados.
+                </p>
+            </div>
+        </div>
+
+        <Image
+            src={footerImage}
+            alt="Imagen ilustrativa de integrante de ARcoder.dev"
+            width={531}
+            height={531}
+            class={"aspect-square w-md xl:w-132.75 h-auto absolute -right-21.75 xl:right-24 -bottom-30.5 hidden md:block brightness-75 z-0"}
+        />
+    </div>
+</footer>
