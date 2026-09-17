@@ -4,11 +4,14 @@ import HeroContainer from "@components/sections/hero/HeroContainer.astro";
 import Tagline from "@components/sections/hero/Tagline.astro";
 import ProjectSlider from "@components/sections/hero/ProjectSlider.astro";
 import BackgroundHero from "@components/sections/hero/BackgroundHero.astro";
+import { MoveDown } from "@lucide/astro";
 ---
 
 <Main title="ARcoder">
     <BackgroundHero />
-    <HeroContainer className="flex items-center justify-between">
+    <HeroContainer
+        className="flex flex-col md:flex-row items-center justify-between mt-6 gap-10 sm:mt-16"
+    >
         <Tagline
             label="Donde la visión digital se convierte en realidad"
             description="Creamos experiencias que trascienden."
@@ -18,5 +21,8 @@ import BackgroundHero from "@components/sections/hero/BackgroundHero.astro";
             ctaLink="#"
         />
         <ProjectSlider />
+        <MoveDown
+            class="size-6 md:size-8 transition-all transform animate-bounce absolute -bottom-16 left-1/2 -translate-x-1/2 text-white"
+        />
     </HeroContainer>
 </Main>

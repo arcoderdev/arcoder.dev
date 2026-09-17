@@ -1,14 +1,18 @@
 ---
 interface Props {
+    /** Texto del botón */
     text: string;
+    /** URL del botón */
     url: string;
+    /** Variantes del botón */
     variant: "cta" | "primary" | "secondary" | "tertiary";
+    /** Si el botón está deshabilitado */
     isDisabled?: boolean;
 }
 
 const { text, url, variant = "primary", isDisabled = false } = Astro.props;
 const btnClass = {
-    cta: `px-10 py-5 text-base md:text-xl lg:text-2xl transition duration-500 ease-in-out bg-blue-page-900 text-white ${isDisabled ? "bg-gray-page-800 text-gray-page-900" : "hover:bg-blue-page-700 active:bg-blue-page-700"}`,
+    cta: `px-8 py-4 lg:px-10 lg:py-5 text-base md:text-xl lg:text-2xl transition duration-500 ease-in-out bg-blue-page-900 text-white ${isDisabled ? "bg-gray-page-800 text-gray-page-900" : "hover:bg-blue-page-700 active:bg-blue-page-700"}`,
     primary: `px-8 py-4 text-base md:text-xl transition duration-500 ease-in-out bg-blue-page-900 text-white ${isDisabled ? "bg-gray-page-800 text-gray-page-900" : "hover:bg-blue-page-700 active:bg-blue-page-700"}`,
     secondary: `px-6 py-3 text-base transition duration-500 ease-in-out bg-transparent border border-blue-page-900 text-blue-page-900 ${isDisabled ? "bg-transparent text-gray-page-900 border-gray-page-800" : "hover:bg-blue-page-900 hover:text-white active:text-white active:bg-blue-page-900 focus:bg-blue-page-900 focus:text-white"}`,
     tertiary: `px-4 py-2 text-base transition duration-500 ease-in-out bg-transparent  ${isDisabled ? "bg-transparent text-gray-page-900" : "hover:underline active:underline focus:underline text-white"}`,

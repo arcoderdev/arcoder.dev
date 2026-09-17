@@ -1,0 +1,159 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends HTMLAttributes<"div"> {
+  /** URL o ruta del modelo 3D (.glb / .gltf) */
+  src: string;
+  /** URL o ruta del modelo en formato USDZ para iOS Quick Look en AR */
+  iosSrc?: string;
+  "ios-src"?: string;
+  /** Texto alternativo para accesibilidad */
+  alt?: string;
+  /** URL de una imagen previa mientras carga el modelo */
+  poster?: string;
+  /** Activar controles de cámara con mouse/touch (por defecto: true) */
+  cameraControls?: boolean;
+  /** Rotación automática del modelo (por defecto: true) */
+  autoRotate?: boolean;
+  /** Retardo antes de que comience la rotación automática (ej: "3000ms") */
+  autoRotateDelay?: string | number;
+  /** Intensidad de las sombras (0 a 2, por defecto: 1) */
+  shadowIntensity?: number | string;
+  /** Suavidad de las sombras */
+  shadowSoftness?: number | string;
+  /** Exposición / brillo de la escena */
+  exposure?: number | string;
+  /** Activar Realidad Aumentada en dispositivos compatibles (por defecto: true) */
+  ar?: boolean;
+  /** Modos de Realidad Aumentada (ej: "webxr scene-viewer quick-look") */
+  arModes?: string;
+  /** Ubicación de AR ("floor", "wall", "auto") */
+  arPlacement?: "floor" | "wall" | "auto";
+  /** Imagen HDR de entorno para reflejos/iluminación */
+  environmentImage?: string;
+  /** Imagen HDR de fondo (skybox) */
+  skyboxImage?: string;
+  /** Nombre de la animación a reproducir si el modelo tiene animaciones */
+  animationName?: string;
+  /** Reproducción automática de la animación */
+  autoplay?: boolean;
+  /** Repetición de la animación en bucle */
+  animationLoop?: boolean | string;
+  "animation-loop"?: boolean | string;
+  /** Ángulo inicial o posición de la cámara (ej: "45deg 55deg 2.5m") */
+  cameraOrbit?: string;
+  minCameraOrbit?: string;
+  maxCameraOrbit?: string;
+  fieldOfView?: string;
+  minFieldOfView?: string;
+  maxFieldOfView?: string;
+  loading?: "auto" | "lazy" | "eager";
+  reveal?: "auto" | "interaction" | "manual";
+  interactionPrompt?: "auto" | "when-focused" | "none";
+  className?: string;
+}
+
+const {
+  src,
+  iosSrc,
+  "ios-src": rawIosSrc,
+  alt = "Modelo 3D interactivo",
+  poster,
+  cameraControls = true,
+  autoRotate = true,
+  autoRotateDelay,
+  shadowIntensity = "1",
+  shadowSoftness = "1",
+  exposure = "1",
+  ar = true,
+  arModes = "webxr scene-viewer quick-look",
+  arPlacement = "auto",
+  environmentImage,
+  skyboxImage,
+  animationName,
+  autoplay,
+  animationLoop,
+  "animation-loop": rawAnimationLoop,
+  cameraOrbit,
+  minCameraOrbit,
+  maxCameraOrbit,
+  fieldOfView,
+  minFieldOfView,
+  maxFieldOfView,
+  loading = "lazy",
+  reveal = "auto",
+  interactionPrompt = "auto",
+  className = "",
+  class: rawClass = "",
+  id,
+  style,
+  ...restProps
+} = Astro.props;
+
+const iosSource = iosSrc ?? rawIosSrc;
+const animationLoopValue = animationLoop ?? rawAnimationLoop;
+
+const classes = [
+  "w-full h-full min-h-[300px] block focus:outline-none active:outline-none",
+  rawClass,
+  className,
+]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<!-- Import script para Google Model Viewer -->
+<script
+  type="module"
+  src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"
+></script>
+
+<model-viewer
+  id={id}
+  class={classes}
+  style={style}
+  src={src}
+  ios-src={iosSource}
+  alt={alt}
+  poster={poster}
+  camera-controls={cameraControls ? "" : undefined}
+  auto-rotate={autoRotate ? "" : undefined}
+  auto-rotate-delay={autoRotateDelay}
+  shadow-intensity={shadowIntensity}
+  shadow-softness={shadowSoftness}
+  exposure={exposure}
+  ar={ar ? "" : undefined}
+  ar-modes={ar ? arModes : undefined}
+  ar-placement={arPlacement}
+  environment-image={environmentImage}
+  skybox-image={skyboxImage}
+  animation-name={animationName}
+  autoplay={autoplay ? "" : undefined}
+  animation-loop={animationLoopValue !== undefined
+    ? animationLoopValue === true
+      ? ""
+      : animationLoopValue
+    : undefined}
+  camera-orbit={cameraOrbit}
+  min-camera-orbit={minCameraOrbit}
+  max-camera-orbit={maxCameraOrbit}
+  field-of-view={fieldOfView}
+  min-field-of-view={minFieldOfView}
+  max-field-of-view={maxFieldOfView}
+  loading={loading}
+  reveal={reveal}
+  interaction-prompt={interactionPrompt}
+  touch-action="pan-y"
+  {...restProps}
+>
+  <slot name="poster" slot="poster" />
+  <slot name="progress-bar" slot="progress-bar" />
+  <slot name="ar-button" slot="ar-button" />
+  <slot />
+</model-viewer>
+
+<style>
+  model-viewer {
+    --poster-color: transparent;
+  }
+</style>

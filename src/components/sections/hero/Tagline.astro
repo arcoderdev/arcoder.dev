@@ -3,12 +3,19 @@ import Button from "@components/ui/Button.astro";
 import { MoveRight } from "@lucide/astro";
 
 interface Props {
+    /** Etiqueta del tag */
     tag?: string;
+    /** Titulo */
     label: string;
+    /** Descripción */
     description: string;
+    /** Alineación */
     align?: "left" | "center";
+    /** Botón */
     button?: "cta" | "custom";
+    /** Texto del botón */
     ctaText: string;
+    /** URL del botón */
     ctaLink: string;
 }
 
@@ -23,7 +30,7 @@ const {
 } = Astro.props;
 
 const alignText = {
-    left: "items-center justify-center text-center sm:items-start sm:justify-start sm:text-left",
+    left: "items-center justify-center text-center md:items-start md:justify-start md:text-left",
     center: "items-center justify-center text-center",
 };
 ---
@@ -59,7 +66,7 @@ const alignText = {
     {
         button === "cta" && (
             <Button variant="cta" text={ctaText} url={ctaLink}>
-                <MoveRight slot="icon" class="hidden sm:inline-flex" />
+                <MoveRight slot="icon" class="hidden lg:inline-flex" />
             </Button>
         )
     }

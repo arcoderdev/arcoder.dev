@@ -42,7 +42,7 @@ const pathname = Astro.url.pathname;
             alt="Logo de ARcoder.dev"
             width={69}
             height={41}
-            class={"aspect-69/41 w-13.5 h-8 md:w-14 md:h-8.25 lg:w-17.25 lg:h-10.25"}
+            class={"aspect-69/41 w-12 h-8 md:w-14 md:h-8.25 lg:w-17.25 lg:h-10.25"}
         />
     </a>
     <nav class="hidden md:block">
@@ -69,12 +69,14 @@ const pathname = Astro.url.pathname;
         <a
             href="#"
             class:list={[
-                "px-3 py-2 md:px-5 md:py-3 rounded-full font-medium text-center transition duration-500 ease-in-out",
+                "px-3 py-2 md:px-5 md:py-3 rounded-full text-sm md:text-base font-medium text-center transition duration-500 ease-in-out",
                 variantClass[variant],
             ]}>Hablemos de tu proyecto</a
         >
         <button class="cursor-pointer md:hidden">
-            <Menu class="stroke-white size-8 transition-all transform" />
+            <Menu
+                class="stroke-white size-6 md:size-8 transition-all transform"
+            />
         </button>
     </div>
 </header>

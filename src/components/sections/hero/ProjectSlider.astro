@@ -1,9 +1,5 @@
 ---
-import { Image } from "astro:assets";
-import model from "@assets/slider-image-1.png";
-import bull from "@assets/slider-image-2.png";
-import house from "@assets/slider-image-3.png";
-import RAIcon from "@icons/svg/RAIcon.svg?url";
+import ModelViewer from "@components/ui/ModelViewer.astro";
 
 interface Props {
   initialSlide?: 0 | 1 | 2;
@@ -12,19 +8,30 @@ interface Props {
 const { initialSlide = 0 } = Astro.props;
 
 const slides = [
-  { image: bull, alt: "Ilustración 3D de un toro amarillo", className: "bull" },
-  { image: model, alt: "Modelo 3D de una figura humana", className: "model" },
-  { image: house, alt: "Modelo 3D de una casa", className: "house" },
+  {
+    poster: "./models/posters/DoomPoster.webp",
+    alt: "Ilustración 3D de Dr Doom",
+    modelGLB: "/models/doom/DoomModel.glb",
+    modelUSDZ: "/models/doom/DoomModel.usdz",
+    className: "doom",
+    animated: true,
+  },
+  {
+    poster: "./models/posters/JicaraPoster.webp",
+    alt: "Ilustración 3D de Jicara Tabasqueña",
+    modelGLB: "/models/jicara/JicaraModel.glb",
+    className: "jicara",
+  },
 ];
 ---
 
 <article
-  class="project-slider"
+  class="project-slider w-full max-w-129 h-full max-h-123.5"
   data-project-slider
   data-active={initialSlide}
   aria-label="Proyectos destacados"
 >
-  <div class="project-slider__stage">
+  <div class="project-slider__stage w-129 h-123.5">
     {
       slides.map((slide, index) => (
         <div
@@ -32,26 +39,16 @@ const slides = [
           data-slide={index}
           aria-hidden={index !== initialSlide}
         >
-          <Image
-            src={slide.image}
-            alt={slide.alt}
-            width={516}
-            height={494}
-            loading={index === initialSlide ? "eager" : "lazy"}
-            class={"w-full h-auto"}
+          <ModelViewer
+            poster={slide.poster}
+            src={slide.modelGLB}
+            ios-src={slide.modelUSDZ || undefined}
+            autoplay={slide.animated || false}
+            animationLoop={slide.animated || false}
           />
         </div>
       ))
     }
-    <span class="project-slider__badge" aria-hidden="true">
-      <Image
-        class="project-slider__cube"
-        src={RAIcon}
-        width={32}
-        height={32}
-        alt=""
-      />
-    </span>
   </div>
 
   <div
@@ -102,7 +99,7 @@ const slides = [
         autoPlayTimer = window.setInterval(() => {
           const currentSlide = Number(slider.dataset.active ?? 0);
           selectSlide((currentSlide + 1) % slides.length);
-        }, 5_000);
+        }, 5000);
       };
 
       dots.forEach((dot, index) =>
@@ -119,8 +116,6 @@ const slides = [
 <style>
   .project-slider {
     display: flex;
-    width: 516px;
-    height: 538px;
     flex: none;
     flex-direction: column;
     align-items: center;
@@ -128,8 +123,6 @@ const slides = [
   }
   .project-slider__stage {
     position: relative;
-    width: 516px;
-    height: 494px;
     overflow: hidden;
   }
   .project-slider__slide {
@@ -139,17 +132,8 @@ const slides = [
     opacity: 0;
     transition: opacity 180ms ease;
   }
-  .project-slider__slide :global(img) {
-    position: absolute;
-    display: block;
-    max-width: none;
-    width: 516px;
-    height: 494px;
-    object-fit: cover;
-  }
   .project-slider[data-active="0"] .project-slider__slide[data-slide="0"],
-  .project-slider[data-active="1"] .project-slider__slide[data-slide="1"],
-  .project-slider[data-active="2"] .project-slider__slide[data-slide="2"] {
+  .project-slider[data-active="1"] .project-slider__slide[data-slide="1"] {
     visibility: visible;
     opacity: 1;
   }
@@ -200,11 +184,7 @@ const slides = [
     box-shadow: 0 0 3px #062543;
     transition: 0.3s all ease-in-out;
   }
-  /* .project-slider__controls button:focus-visible {
-    outline: 2px solid #fff;
-    outline-offset: 4px;
-  } */
-  @media (max-width: 900px) {
+  @media (max-width: 1258px) {
     .project-slider {
       width: 42vw;
       height: 47vw;
@@ -214,15 +194,6 @@ const slides = [
     .project-slider__stage {
       width: 100%;
       height: calc(100% - 44px);
-    }
-  }
-  @media (max-width: 700px) {
-    .project-slider {
-      width: min(100%, 516px);
-      height: min(104vw, 538px);
-      min-width: 0;
-      min-height: 0;
-      align-self: center;
     }
   }
 </style>
