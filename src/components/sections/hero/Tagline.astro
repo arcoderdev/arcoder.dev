@@ -1,0 +1,76 @@
+---
+import Button from "@components/ui/Button.astro";
+import { MoveRight } from "@lucide/astro";
+
+interface Props {
+    tag?: string;
+    label: string;
+    description: string;
+    align?: "left" | "center";
+    button?: "cta" | "custom";
+    ctaText: string;
+    ctaLink: string;
+}
+
+const {
+    tag,
+    label,
+    description,
+    align = "left",
+    button = "cta",
+    ctaText,
+    ctaLink,
+} = Astro.props;
+
+const alignText = {
+    left: "items-center justify-center text-center sm:items-start sm:justify-start sm:text-left",
+    center: "items-center justify-center text-center",
+};
+---
+
+<article
+    class:list={[
+        "flex flex-col gap-16 lg:gap-20 max-w-152.5 w-full",
+        alignText[align],
+        ,
+    ]}
+>
+    <div class:list={["flex flex-col gap-4 w-full", alignText[align]]}>
+        {
+            tag && (
+                <small class="bg-blue-page-100 px-4 py-2 rounded-full text-xs text-blu-page-600 uppercase w-fit">
+                    {tag}
+                </small>
+            )
+        }
+        <div class:list={["flex flex-col gap-6", alignText[align]]}>
+            <h2
+                class="font-bold text-2xl sm:text-[36px] lg:text-[40px] text-white [text-shadow:0px_4px_4px_rgb(0_0_0/0.25)]"
+            >
+                {label}
+            </h2>
+            <p
+                class="self-stretch text-blue-page-100 font-medium text-base md:text-xl [text-shadow:0px_4px_4px_rgb(0_0_0/0.25)]"
+            >
+                {description}
+            </p>
+        </div>
+    </div>
+    {
+        button === "cta" && (
+            <Button variant="cta" text={ctaText} url={ctaLink}>
+                <MoveRight slot="icon" class="hidden sm:inline-flex" />
+            </Button>
+        )
+    }
+    {
+        button === "custom" && (
+            <a
+                href={ctaLink}
+                class="px-8 py-3 bg-white text-blue-page-600 shadow-[0px_0px_12px_0px_rgba(255,255,255,0.25)] rounded-lg font-medium text-base md:text-xl lg:text-2xl w-full sm:w-fit hover:bg-blue-page-100 transition duration-500 ease-in-out active:bg-blue-page-100 focus:bg-blue-page-100"
+            >
+                {ctaText}
+            </a>
+        )
+    }
+</article>

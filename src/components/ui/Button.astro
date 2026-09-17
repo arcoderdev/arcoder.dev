@@ -8,8 +8,8 @@ interface Props {
 
 const { text, url, variant = "primary", isDisabled = false } = Astro.props;
 const btnClass = {
-    cta: `px-10 py-5 text-2xl transition duration-500 ease-in-out bg-blue-page-900 text-white ${isDisabled ? "bg-gray-page-800 text-gray-page-900" : "hover:bg-blue-page-700 active:bg-blue-page-700"}`,
-    primary: `px-8 py-4 text-xl transition duration-500 ease-in-out bg-blue-page-900 text-white ${isDisabled ? "bg-gray-page-800 text-gray-page-900" : "hover:bg-blue-page-700 active:bg-blue-page-700"}`,
+    cta: `px-10 py-5 text-base md:text-xl lg:text-2xl transition duration-500 ease-in-out bg-blue-page-900 text-white ${isDisabled ? "bg-gray-page-800 text-gray-page-900" : "hover:bg-blue-page-700 active:bg-blue-page-700"}`,
+    primary: `px-8 py-4 text-base md:text-xl transition duration-500 ease-in-out bg-blue-page-900 text-white ${isDisabled ? "bg-gray-page-800 text-gray-page-900" : "hover:bg-blue-page-700 active:bg-blue-page-700"}`,
     secondary: `px-6 py-3 text-base transition duration-500 ease-in-out bg-transparent border border-blue-page-900 text-blue-page-900 ${isDisabled ? "bg-transparent text-gray-page-900 border-gray-page-800" : "hover:bg-blue-page-900 hover:text-white active:text-white active:bg-blue-page-900 focus:bg-blue-page-900 focus:text-white"}`,
     tertiary: `px-4 py-2 text-base transition duration-500 ease-in-out bg-transparent  ${isDisabled ? "bg-transparent text-gray-page-900" : "hover:underline active:underline focus:underline text-white"}`,
 };
@@ -19,7 +19,7 @@ const btnClass = {
     href={isDisabled ? undefined : url}
     aria-disabled={isDisabled}
     class:list={[
-        "rounded-sm inline-flex items-center gap-3 font-medium shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]",
+        "rounded-sm inline-flex items-center justify-center sm:justify-start gap-3 font-medium shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] w-full sm:w-fit",
         isDisabled ? "cursor-not-allowed" : "focus:outline-none",
         btnClass[variant],
     ]}

@@ -1,5 +1,5 @@
 ---
-import Image from "astro/components/Image.astro";
+import { Image } from "astro:assets";
 import { Menu } from "@lucide/astro";
 
 interface Props {
@@ -33,7 +33,9 @@ const { variant = "primary" } = Astro.props;
 const pathname = Astro.url.pathname;
 ---
 
-<header class="w-full max-w-312 flex items-center justify-between mx-auto">
+<header
+    class="w-full max-w-360 px-6 2xl:px-0 pt-6 flex items-center justify-between mx-auto"
+>
     <a href="/">
         <Image
             src="/arcoder-logo.svg"

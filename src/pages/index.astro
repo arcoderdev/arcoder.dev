@@ -1,9 +1,22 @@
 ---
 import Main from "@layouts/Main.astro";
-import Button from "@components/ui/Button.astro";
-import { MoveRight } from "@lucide/astro";
+import HeroContainer from "@components/sections/hero/HeroContainer.astro";
+import Tagline from "@components/sections/hero/Tagline.astro";
+import ProjectSlider from "@components/sections/hero/ProjectSlider.astro";
+import BackgroundHero from "@components/sections/hero/BackgroundHero.astro";
 ---
 
 <Main title="ARcoder">
-    <h1 class="text-center text-4xl font-bold text-white">Proyectos</h1>
+    <BackgroundHero />
+    <HeroContainer className="flex items-center justify-between">
+        <Tagline
+            label="Donde la visión digital se convierte en realidad"
+            description="Creamos experiencias que trascienden."
+            align="left"
+            button="cta"
+            ctaText="Demos vida a tu idea digital"
+            ctaLink="#"
+        />
+        <ProjectSlider />
+    </HeroContainer>
 </Main>

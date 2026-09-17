@@ -1,0 +1,16 @@
+---
+import { Image } from "astro:assets";
+import bgGlow from "@assets/bg.svg";
+---
+
+<div
+    class="absolute -top-41.25 left-0 w-full h-full max-h-[1653px] pointer-events-none -z-10 select-none mask-[linear-gradient(to_bottom,black_60%,transparent_100%)]"
+>
+    <Image
+        src={bgGlow}
+        alt="Combinación de colores oscuros con luces azules"
+        width={1440}
+        height={1653}
+        class="w-full h-full object-cover object-top"
+    />
+</div>
