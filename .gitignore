@@ -25,3 +25,5 @@ pnpm-debug.log*
 
 # local MCP configuration / secrets
 .agents/
+
+*.bat
