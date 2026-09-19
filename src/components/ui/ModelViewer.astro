@@ -82,7 +82,7 @@ const {
   maxFieldOfView,
   loading = "lazy",
   reveal = "auto",
-  interactionPrompt = "auto",
+  interactionPrompt = "none",
   className = "",
   class: rawClass = "",
   id,
@@ -94,7 +94,7 @@ const iosSource = iosSrc ?? rawIosSrc;
 const animationLoopValue = animationLoop ?? rawAnimationLoop;
 
 const classes = [
-  "w-full h-full min-h-[300px] block focus:outline-none active:outline-none",
+  "block focus:outline-none active:outline-none",
   rawClass,
   className,
 ]
@@ -155,5 +155,6 @@ const classes = [
 <style>
   model-viewer {
     --poster-color: transparent;
+    --progress-bar-color: transparent;
   }
 </style>
