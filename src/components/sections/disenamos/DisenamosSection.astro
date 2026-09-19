@@ -1,0 +1,448 @@
+---
+import CardArte3D from "./CardArte3D.astro";
+import CardUxUi from "./CardUxUi.astro";
+import CardRecorridos from "./CardRecorridos.astro";
+import CardEdicion from "./CardEdicion.astro";
+import { designServices, type DesignService } from "@data/designServices";
+import { LineSquiggle } from "@lucide/astro";
+
+const cards = {
+  arte3D: CardArte3D,
+  uxUi: CardUxUi,
+  recorridos: CardRecorridos,
+  edicion: CardEdicion,
+} as const;
+---
+
+<section
+  id="disenamos-section"
+  class="relative w-full min-h-dvh overflow-hidden py-16 flex flex-col justify-start"
+>
+  <div
+    class="w-full max-w-360 mx-auto px-6 2xl:px-0 flex flex-col gap-8 sm:gap-10 md:gap-20"
+  >
+    <header class="flex flex-col md:flex-row items-start justify-start gap-3">
+      <LineSquiggle
+        class="w-8 md:w-15 aspect-square h-auto object-cover text-white"
+        width={28}
+        height={28}
+      />
+      <div class="flex flex-col text-left">
+        <h2
+          class="text-2xl md:text-[40px] font-bold text-white uppercase tracking-wider drop-shadow-[0_4px_4px_rgba(144,202,249,0.1)]"
+        >
+          Diseñamos
+        </h2>
+        <p class="text-base sm:text-lg lg:text-xl text-white font-normal">
+          Cada proyecto comienza con una idea brillante.
+        </p>
+      </div>
+    </header>
+
+    <div class="w-full overflow-visible">
+      <div
+        id="disenamos-slider-track"
+        class="flex gap-8 lg:gap-15 w-max will-change-transform pr-6 lg:pr-40 xl:pr-64"
+      >
+        {
+          designServices.map((service: DesignService) => {
+            const Card = cards[service.id];
+            return (
+              <div class="disenamos-slide h-fit">
+                <Card title={service.title} description={service.description} />
+              </div>
+            );
+          })
+        }
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="w-full h-full absolute inset-0 -z-1 bg-[url('/bg-disenamos.png')] bg-cover bg-center bg-no-repeat overlay"
+  >
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Precarga global de los 100 frames del Recorrido Virtual en Canvas
+  const totalFrames = 100;
+  const frames: HTMLImageElement[] = [];
+  let isFramesPreloaded = false;
+
+  function preloadFrames(
+    ctx: CanvasRenderingContext2D | null,
+    canvas: HTMLCanvasElement | null,
+    loader: HTMLElement | null,
+  ) {
+    if (isFramesPreloaded) return;
+    isFramesPreloaded = true;
+    let loadedCount = 0;
+
+    for (let i = 1; i <= totalFrames; i++) {
+      const img = new Image();
+      const num = String(i).padStart(3, "0");
+      img.src = `/recorrido/${num}.png`;
+      img.onload = () => {
+        loadedCount++;
+        if (loadedCount === 1 && ctx && canvas) {
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        }
+        if (loadedCount >= 10 && loader) {
+          loader.style.opacity = "0";
+        }
+      };
+      frames.push(img);
+    }
+  }
+
+  let mm: gsap.MatchMedia | null = null;
+
+  function initDisenamosAnimation() {
+    if (mm) {
+      mm.revert();
+    }
+
+    const section = document.querySelector("#disenamos-section");
+    const track = document.querySelector(
+      "#disenamos-slider-track",
+    ) as HTMLElement;
+    if (!section || !track) return;
+
+    const canvas = document.querySelector(
+      "#recorrido-canvas",
+    ) as HTMLCanvasElement;
+    const ctx = canvas?.getContext("2d");
+    const loader = document.querySelector("#canvas-loader") as HTMLElement;
+    preloadFrames(ctx, canvas, loader);
+
+    const renderFrame = (index: number) => {
+      const idx = Math.min(Math.max(0, Math.floor(index)), totalFrames - 1);
+      const targetImg = frames[idx];
+      if (targetImg && targetImg.complete && ctx && canvas) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(targetImg, 0, 0, canvas.width, canvas.height);
+      }
+    };
+
+    const modelViewer = document.querySelector("#arte-3d-model") as any;
+    const iphoneScreen = document.querySelector(
+      "#iphone-web-screen",
+    ) as HTMLElement;
+    const videoEdicion = document.querySelector(
+      "#video-card video",
+    ) as HTMLVideoElement | null;
+
+    // Calcular desplazamiento horizontal para que la última card quede totalmente visible
+    const getScrollAmount = () => {
+      const trackWidth = track.scrollWidth;
+      const viewportWidth = window.innerWidth;
+      const extraMargin = window.innerWidth < 768 ? 40 : 120;
+      return -(trackWidth - viewportWidth + extraMargin);
+    };
+
+    // Cálculo dinámico para que la web en el iPhone haga scroll completo hasta el final
+    const getIphoneScrollDistance = () => {
+      if (!iphoneScreen || !iphoneScreen.parentElement) return -800;
+      const parentH = iphoneScreen.parentElement.clientHeight;
+      const imgH = iphoneScreen.clientHeight;
+      return -(imgH - parentH);
+    };
+
+    mm = gsap.matchMedia();
+
+    // DESKTOP: >= 640px (Comportamiento original de scroll horizontal)
+    mm.add("(min-width: 640px)", () => {
+      const slides = gsap.utils.toArray<HTMLElement>(".disenamos-slide");
+      gsap.set(slides, { clearProps: "all" });
+      gsap.set(track, { clearProps: "all" });
+
+      const masterTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          pin: true,
+          start: "top top",
+          end: "+=3600",
+          scrub: 1.2,
+          invalidateOnRefresh: true,
+          onLeave: () => videoEdicion?.pause(),
+          onLeaveBack: () => videoEdicion?.pause(),
+        },
+      });
+
+      // A) Desplazamiento horizontal del carrusel a lo largo de todo el scroll
+      masterTimeline.to(
+        track,
+        {
+          x: getScrollAmount,
+          ease: "none",
+          duration: 1,
+        },
+        0,
+      );
+
+      // B) Card 1: Rotación 360° del modelo 3D
+      const rotationState = { angle: 0 };
+      masterTimeline.to(
+        rotationState,
+        {
+          angle: 360,
+          ease: "none",
+          duration: 0.2,
+          onUpdate: () => {
+            if (modelViewer) {
+              modelViewer.cameraOrbit = `${rotationState.angle}deg 75deg 105%`;
+            }
+          },
+        },
+        0,
+      );
+
+      // C) Card 2: Scroll COMPLETO de la web en el iPhone justo después de girar el modelo 3D (0.20 -> 0.46)
+      if (iphoneScreen) {
+        masterTimeline.to(
+          iphoneScreen,
+          {
+            y: getIphoneScrollDistance,
+            ease: "none",
+            duration: 0.26,
+          },
+          0.2,
+        );
+      }
+
+      // D) Card 3: Secuencia de 100 frames en el canvas del iMac (0.46 -> 0.82)
+      const frameState = { frame: 0 };
+      masterTimeline.to(
+        frameState,
+        {
+          frame: totalFrames - 1,
+          ease: "none",
+          duration: 0.36,
+          onUpdate: () => {
+            renderFrame(frameState.frame);
+          },
+        },
+        0.46,
+      );
+
+      // E) Card 4: Reproducción del video justo al terminar los 100 frames del recorrido (0.46 + 0.36 = 0.82)
+      masterTimeline.to(
+        {},
+        {
+          onStart: () => {
+            videoEdicion?.play().catch(() => {});
+          },
+          onReverseComplete: () => {
+            videoEdicion?.pause();
+          },
+        },
+        0.82,
+      );
+    });
+
+    // MOBILE: < 640px (Cards stackeándose unas sobre otras con sus respectivas animaciones)
+    mm.add("(max-width: 639px)", () => {
+      const slides = gsap.utils.toArray<HTMLElement>(".disenamos-slide");
+      if (!slides.length) return;
+
+      // Configuramos el contenedor en modo stack (apilado)
+      gsap.set(track, {
+        display: "grid",
+        gridTemplateAreas: '"stack"',
+        width: "100%",
+        paddingRight: 0,
+        gap: 0,
+        x: 0,
+      });
+
+      // Estado inicial de las cartas: todas apiladas en el mismo espacio, Card 0 visible y el resto esperando con opacity: 0
+      slides.forEach((slide, i) => {
+        gsap.set(slide, {
+          gridArea: "stack",
+          width: "100%",
+          yPercent: i === 0 ? 0 : 80,
+          scale: 1,
+          opacity: i === 0 ? 1 : 0,
+          zIndex: (i + 1) * 10,
+          transformOrigin: "center top",
+        });
+      });
+
+      const mobileTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          pin: true,
+          start: "top top",
+          end: "+=3200",
+          scrub: 1.2,
+          invalidateOnRefresh: true,
+          onLeave: () => videoEdicion?.pause(),
+          onLeaveBack: () => videoEdicion?.pause(),
+        },
+      });
+
+      // 1. Animación Card 1: Rotación 360° del modelo 3D
+      const rotationState = { angle: 0 };
+      mobileTimeline.to(
+        rotationState,
+        {
+          angle: 360,
+          ease: "none",
+          duration: 1,
+          onUpdate: () => {
+            if (modelViewer) {
+              modelViewer.cameraOrbit = `${rotationState.angle}deg 75deg 105%`;
+            }
+          },
+        },
+        0,
+      );
+
+      // 2. Transición: Card 2 entra con desvanecido (opacity: 0 -> 1) y se apila sobre Card 1
+      mobileTimeline.fromTo(
+        slides[1],
+        {
+          yPercent: 80,
+          opacity: 0,
+        },
+        {
+          yPercent: 0,
+          opacity: 1,
+          ease: "power2.out",
+          duration: 0.6,
+        },
+        1.0,
+      );
+      mobileTimeline.to(
+        slides[0],
+        {
+          scale: 0.94,
+          opacity: 0,
+          ease: "power2.out",
+          duration: 0.6,
+        },
+        1.0,
+      );
+
+      // 3. Animación Card 2: Scroll del iPhone
+      if (iphoneScreen) {
+        mobileTimeline.to(
+          iphoneScreen,
+          {
+            y: getIphoneScrollDistance,
+            ease: "none",
+            duration: 1,
+          },
+          1.6,
+        );
+      }
+
+      // 4. Transición: Card 3 entra con desvanecido (opacity: 0 -> 1) y se apila sobre Card 2
+      mobileTimeline.fromTo(
+        slides[2],
+        {
+          yPercent: 80,
+          opacity: 0,
+        },
+        {
+          yPercent: 0,
+          opacity: 1,
+          ease: "power2.out",
+          duration: 0.6,
+        },
+        2.6,
+      );
+      mobileTimeline.to(
+        slides[1],
+        {
+          scale: 0.94,
+          opacity: 0,
+          ease: "power2.out",
+          duration: 0.6,
+        },
+        2.6,
+      );
+
+      // 5. Animación Card 3: Secuencia de frames del recorrido
+      const frameState = { frame: 0 };
+      mobileTimeline.to(
+        frameState,
+        {
+          frame: totalFrames - 1,
+          ease: "none",
+          duration: 1,
+          onUpdate: () => {
+            renderFrame(frameState.frame);
+          },
+        },
+        3.2,
+      );
+
+      // 6. Transición: Card 4 entra con desvanecido (opacity: 0 -> 1) y se apila sobre Card 3
+      mobileTimeline.fromTo(
+        slides[3],
+        {
+          yPercent: 80,
+          opacity: 0,
+        },
+        {
+          yPercent: 0,
+          opacity: 1,
+          ease: "power2.out",
+          duration: 0.6,
+          onStart: () => {
+            videoEdicion?.play().catch(() => {});
+          },
+          onReverseComplete: () => {
+            videoEdicion?.pause();
+          },
+        },
+        4.2,
+      );
+      mobileTimeline.to(
+        slides[2],
+        {
+          scale: 0.94,
+          opacity: 0,
+          ease: "power2.out",
+          duration: 0.6,
+        },
+        4.2,
+      );
+
+      // Pausa final antes de despinear
+      mobileTimeline.to({}, { duration: 0.3 });
+    });
+  }
+
+  // Inicializar al cargar el DOM
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initDisenamosAnimation);
+  } else {
+    initDisenamosAnimation();
+  }
+
+  // Reiniciar en transiciones de página de Astro
+  document.addEventListener("astro:page-load", initDisenamosAnimation);
+</script>
+
+<style>
+  #disenamos-section {
+    contain: paint;
+  }
+
+  .overlay {
+    opacity: 0.3;
+    mask-image: linear-gradient(
+      to bottom,
+      var(--color-black-page-800),
+      transparent 100%
+    );
+  }
+</style>

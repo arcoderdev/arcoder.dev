@@ -1,0 +1,27 @@
+---
+import ModelViewer from "@components/ui/ModelViewer.astro";
+import CardBase from "./CardBase.astro";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<CardBase title={title} description={description}>
+  <ModelViewer
+    id="arte-3d-model"
+    src="/models/jicara/JicaraModel.glb"
+    alt="Modelo 3D Jícara"
+    autoRotate={false}
+    ar={false}
+    cameraControls={false}
+    interactionPrompt="none"
+    shadowIntensity="1.5"
+    cameraOrbit="0deg 75deg 105%"
+    fieldOfView="30deg"
+    className="w-3/4 h-full"
+  />
+</CardBase>

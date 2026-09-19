@@ -1,0 +1,38 @@
+---
+import CardBase from "./CardBase.astro";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<CardBase title={title} description={description}>
+  <div
+    class="relative w-full max-w-121.5 aspect-800/533 flex items-center justify-center rounded-2xl"
+  >
+    <div
+      class="absolute left-[14%] top-[17.26%] w-[46.15%] h-[43.7%] overflow-hidden rounded-xs z-10 flex items-center justify-center"
+    >
+      <canvas
+        id="recorrido-canvas"
+        width="1280"
+        height="720"
+        class="w-full h-full object-cover will-change-transform"></canvas>
+      <div
+        id="canvas-loader"
+        class="absolute inset-0 flex items-center justify-center bg-slate-900/80 text-white text-xs z-20 pointer-events-none transition-opacity duration-300"
+      >
+        <span class="animate-pulse">Cargando recorrido...</span>
+      </div>
+    </div>
+
+    <img
+      src="/mockups/mockup-laptop.png"
+      alt="Mockup Laptop Recorridos Virtuales"
+      class="relative w-full h-full object-contain pointer-events-none z-20 rounded-2xl"
+    />
+  </div>
+</CardBase>

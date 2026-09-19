@@ -1,0 +1,26 @@
+---
+import Heading from "@components/ui/Heading.astro";
+
+interface Props {
+    title: string;
+    description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<article
+    class="disenamos-card relative w-full sm:min-h-140 lg:max-h-165.5 lg:min-h-165 shrink-0 flex flex-col justify-between"
+>
+    <div
+        class="w-full h-[50%] sm:h-95 lg:h-138.25 flex items-center justify-center overflow-hidden aspect-square"
+    >
+        <slot />
+    </div>
+
+    <div
+        class="absolute top-24 sm:-top-36 md:-top-1 sm:left-0 w-full h-full z-20 flex flex-col items-start justify-end gap-3 pointer-events-none"
+    >
+        <Heading title={title} description={description} />
+    </div>
+</article>

@@ -1,0 +1,34 @@
+---
+import Heading from "@components/ui/Heading.astro";
+import CardBase from "./CardBase.astro";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<CardBase title={title} description={description}>
+  <div
+    class="relative mt-12 lg:mt-0 w-full max-w-125 aspect-578/800 flex items-center justify-center"
+  >
+    <div
+      class="absolute left-[21%] top-[11.5%] w-[45%] h-[68%] overflow-hidden rounded-[18px] sm:rounded-4xl z-10"
+    >
+      <img
+        id="iphone-web-screen"
+        src="/web-preview/homepage.jpg"
+        alt="Vista previa de la web"
+        class="w-full h-auto object-top transition-none will-change-transform select-none pointer-events-none"
+      />
+    </div>
+
+    <img
+      src="/mockups/mockup-phone.png"
+      alt="Mockup iPhone"
+      class="relative w-full h-full object-contain pointer-events-none z-20 mask-[radial-gradient(ellipse_100%_90%_at_15%_40%,black_55%,transparent_90%)] [-webkit-mask-image:radial-gradient(ellipse_100%_90%_at_15%_40%,black_55%,transparent_90%)]"
+    />
+  </div>
+</CardBase>
