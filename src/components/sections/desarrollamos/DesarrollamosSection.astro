@@ -1,0 +1,156 @@
+---
+import type { CardData } from "@interfaces/card.interface";
+import CardSection from "./CardSection.astro";
+import { cardData } from "@data/card-data.ts";
+---
+
+<section
+    id="desarrollamos-section"
+    class="relative w-full h-dvh min-h-dvh overflow-hidden"
+>
+    <div
+        id="desarrollamos-bg-next"
+        class="absolute inset-0 w-full h-full clip -z-2"
+        style={`background-color: ${cardData[1]?.classColor || "#062543"};`}
+    >
+    </div>
+    <div
+        id="desarrollamos-bg"
+        class="absolute inset-0 w-full h-full clip-diagonal -z-1"
+        style={`background-color: ${cardData[0]?.classColor || "#062543"};`}
+    >
+    </div>
+
+    <div class="relative w-full h-full flex items-center justify-center">
+        {
+            cardData.map((card: CardData, index: number) => (
+                <div
+                    class="desarrollamos-card absolute inset-0 w-full h-full flex items-center justify-center"
+                    data-bg-color={card.classColor}
+                    data-index={index}
+                >
+                    <CardSection {...card} />
+                </div>
+            ))
+        }
+    </div>
+</section>
+
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    let ctx: gsap.Context | null = null;
+
+    function initDesarrollamosAnimation() {
+        if (ctx) ctx.revert();
+
+        ctx = gsap.context(() => {
+            const section = document.querySelector("#desarrollamos-section");
+            const cards = gsap.utils.toArray<HTMLElement>(
+                ".desarrollamos-card",
+            );
+            const bg = document.querySelector(
+                "#desarrollamos-bg",
+            ) as HTMLElement | null;
+            const bgNext = document.querySelector(
+                "#desarrollamos-bg-next",
+            ) as HTMLElement | null;
+
+            if (!section || cards.length === 0) return;
+
+            const bgColors = cards.map(
+                (c) => c.getAttribute("data-bg-color") || "#062543",
+            );
+
+            // Estado inicial de las tarjetas
+            cards.forEach((card, i) => {
+                gsap.set(card, {
+                    yPercent: i === 0 ? 0 : 100,
+                    opacity: i === 0 ? 1 : 0,
+                    scale: 1,
+                    zIndex: (i + 1) * 10,
+                    transformOrigin: "center center",
+                });
+            });
+
+            // Timeline sincronizado con el scroll
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: section,
+                    pin: true,
+                    start: "top top",
+                    end: () => `+=${cards.length * 1500}`,
+                    scrub: 1.2,
+                    invalidateOnRefresh: true,
+                },
+            });
+
+            // Animación secuencial: 1° Cambia el color del fondo -> 2° Entra el contenido
+            cards.forEach((card, i) => {
+                if (i > 0) {
+                    const prevCard = cards[i - 1];
+                    const targetColor = bgColors[i];
+                    const nextBgColor = bgColors[i + 1];
+
+                    // 1. PRIMERO: Cambia el color de fondo del clip-diagonal
+                    if (bg && targetColor) {
+                        tl.to(bg, {
+                            backgroundColor: targetColor,
+                            duration: 0.6,
+                            ease: "power1.inOut",
+                        });
+
+                        if (bgNext && nextBgColor) {
+                            tl.to(bgNext, {
+                                backgroundColor: nextBgColor,
+                                duration: 0.6,
+                                ease: "power1.inOut",
+                            });
+                        }
+                    }
+
+                    // 2. POSTERIORMENTE: Aparece la nueva tarjeta y se desvanece la anterior
+                    tl.to(
+                        card,
+                        {
+                            yPercent: 0,
+                            opacity: 1,
+                            ease: "power2.out",
+                            duration: 1,
+                        },
+                        ">",
+                    );
+
+                    tl.to(
+                        prevCard,
+                        {
+                            scale: 0.9,
+                            opacity: 0,
+                            yPercent: -4,
+                            ease: "power2.out",
+                            duration: 1,
+                        },
+                        "<",
+                    );
+
+                    // Pausa de lectura para la tarjeta antes del siguiente cambio
+                    tl.to({}, { duration: 0.5 });
+                }
+            });
+        });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            initDesarrollamosAnimation,
+        );
+    } else {
+        initDesarrollamosAnimation();
+    }
+
+    document.addEventListener("astro:page-load", initDesarrollamosAnimation);
+</script>
