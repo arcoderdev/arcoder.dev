@@ -7,12 +7,13 @@ import BackgroundHero from "@components/sections/hero/BackgroundHero.astro";
 import DisenamosSection from "@components/sections/disenamos/DisenamosSection.astro";
 import { MoveDown } from "@lucide/astro";
 import DesarrollamosSection from "@components/sections/desarrollamos/DesarrollamosSection.astro";
+import EndSection from "@components/sections/end/EndSection.astro";
 ---
 
 <Main title="ARcoder">
     <BackgroundHero />
     <HeroContainer
-        className="flex flex-col md:flex-row items-center justify-between mt-6 gap-10 sm:mt-16"
+        className="flex flex-col md:flex-row items-center justify-between mt-6 gap-10 sm:mt-16 mb-14 2xl:mb-28"
     >
         <Tagline
             label="Donde la visión digital se convierte en realidad"
@@ -31,4 +32,6 @@ import DesarrollamosSection from "@components/sections/desarrollamos/Desarrollam
     <DisenamosSection />
 
     <DesarrollamosSection />
+
+    <EndSection />
 </Main>
