@@ -8,9 +8,17 @@ interface Props {
     variant: "cta" | "primary" | "secondary" | "tertiary";
     /** Si el botón está deshabilitado */
     isDisabled?: boolean;
+    /** Clases adicionales */
+    classAditional?: string;
 }
 
-const { text, url, variant = "primary", isDisabled = false } = Astro.props;
+const {
+    text,
+    url,
+    variant = "primary",
+    isDisabled = false,
+    classAditional = "",
+} = Astro.props;
 const btnClass = {
     cta: `px-8 py-4 lg:px-10 lg:py-5 text-base md:text-xl lg:text-2xl transition duration-500 ease-in-out bg-blue-page-900 text-white ${isDisabled ? "bg-gray-page-800 text-gray-page-900" : "hover:bg-blue-page-700 active:bg-blue-page-700"}`,
     primary: `px-8 py-4 text-base md:text-xl transition duration-500 ease-in-out bg-blue-page-900 text-white ${isDisabled ? "bg-gray-page-800 text-gray-page-900" : "hover:bg-blue-page-700 active:bg-blue-page-700"}`,
@@ -26,6 +34,7 @@ const btnClass = {
         "rounded-sm inline-flex items-center justify-center sm:justify-start gap-3 font-medium shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] w-full sm:w-fit",
         isDisabled ? "cursor-not-allowed" : "focus:outline-none",
         btnClass[variant],
+        classAditional,
     ]}
 >
     {text}
