@@ -1,0 +1,27 @@
+---
+import Content from "./Content.astro";
+import EndIllustrations from "./EndIllustrations.astro";
+---
+
+<section
+    id="end-section"
+    class="relative w-full min-h-screen bg-blue-page-900 flex flex-col justify-end"
+>
+    <!-- Imagen de fondo -->
+    <div
+        class="absolute inset-0 w-full h-full bg-[url('/bg-end.png')] bg-cover bg-center bg-no-repeat mask-[linear-gradient(to_bottom,transparent_0%,black_15%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_15%)] pointer-events-none z-0 opacity-50"
+    >
+    </div>
+
+    <!-- Rectángulo bg-blue-page-500 sobre la imagen -->
+    <div
+        class="absolute bottom-0 inset-x-0 w-full h-43.5 md:h-55 bg-blue-page-500 z-[1]"
+    >
+    </div>
+
+    <!-- Ilustraciones decorativas (humano, árbol, rocas, plantas) -->
+    <EndIllustrations />
+
+    <!-- Contenido sobre todo -->
+    <Content />
+</section>

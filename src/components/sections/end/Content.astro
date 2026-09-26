@@ -1,0 +1,36 @@
+---
+import Button from "@components/ui/Button.astro";
+import { MoveRight } from "@lucide/astro";
+---
+
+<div
+    class="relative z-10 w-full max-w-360 mx-auto flex flex-col items-center justify-end text-white mb-6 sm:mb-11 px-6 lg:px-0"
+>
+    <div
+        class="w-full max-w-144.25 md:max-w-207.5 text-center flex flex-col gap-14 sm:gap-28 md:gap-39.5 items-center justify-center"
+    >
+        <h3
+            class="font-bold text-2xl sm:text-[36px] md:text-5xl max-w-173 uppercase"
+        >
+            Soluciones digitales que te llevan más allá
+        </h3>
+        <p class="text-base md:text-xl">
+            Más allá de cada línea de código y cada pixel diseñado, hay una
+            promesa: la de superar expectativas.
+        </p>
+    </div>
+
+    <div
+        class="max-w-123.75 w-full text-center flex flex-col gap-6 items-center justify-center mt-72 md:mt-66.5"
+    >
+        <p class="text-base sm:text-xl">¿Listo para trascender lo ordinario?</p>
+        <Button
+            text="Agenda una sesión estratégica"
+            url="#"
+            variant="cta"
+            classAditional="outline outline-1 outline-offset-[-1px] outline-white"
+        >
+            <MoveRight slot="icon" class="hidden lg:inline-flex" />
+        </Button>
+    </div>
+</div>
