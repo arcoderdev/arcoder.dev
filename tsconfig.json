@@ -3,6 +3,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@common/*": [
+        "./src/common/*"
+      ],
       "@assets/*": [
         "./src/assets/*"
       ],
@@ -23,8 +26,13 @@
       ],
       "@interfaces/*": [
         "./src/interfaces/*"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
       ]
-    }
+    },
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact"
   },
   "include": [
     ".astro/types.d.ts",
