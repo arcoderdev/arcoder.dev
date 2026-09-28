@@ -34,3 +34,20 @@ body {
   font-family: 'Poppins', sans-serif;
   background-color: var(--color-black-page-800);
 }
+
+.scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scroll::-webkit-scrollbar-track {
+  background: #101014;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+  background: #1976D2;
+  border-radius: 4px;
+}
+
+.scroll::-webkit-scrollbar-thumb:hover {
+  background: #1976D2;
+}
