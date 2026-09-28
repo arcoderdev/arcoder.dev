@@ -1,0 +1,62 @@
+[
+  {
+    "name": "México",
+    "code": "MX",
+    "dialCode": "+52",
+    "flag": "🇲🇽"
+  },
+  {
+    "name": "Estados Unidos",
+    "code": "US",
+    "dialCode": "+1",
+    "flag": "🇺🇸"
+  },
+  {
+    "name": "España",
+    "code": "ES",
+    "dialCode": "+34",
+    "flag": "🇪🇸"
+  },
+  {
+    "name": "Colombia",
+    "code": "CO",
+    "dialCode": "+57",
+    "flag": "🇨🇴"
+  },
+  {
+    "name": "Argentina",
+    "code": "AR",
+    "dialCode": "+54",
+    "flag": "🇦🇷"
+  },
+  {
+    "name": "Chile",
+    "code": "CL",
+    "dialCode": "+56",
+    "flag": "🇨🇱"
+  },
+  {
+    "name": "Perú",
+    "code": "PE",
+    "dialCode": "+51",
+    "flag": "🇵🇪"
+  },
+  {
+    "name": "Ecuador",
+    "code": "EC",
+    "dialCode": "+593",
+    "flag": "🇪🇨"
+  },
+  {
+    "name": "Guatemala",
+    "code": "GT",
+    "dialCode": "+502",
+    "flag": "🇬🇹"
+  },
+  {
+    "name": "Costa Rica",
+    "code": "CR",
+    "dialCode": "+506",
+    "flag": "🇨🇷"
+  }
+]

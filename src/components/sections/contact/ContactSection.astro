@@ -1,0 +1,29 @@
+---
+import CTA from "./CTA.astro";
+import ContactForm from "@common/contact/ContactForm";
+import Blob1 from "@assets/contact-section/blob-1.svg";
+import Blob2 from "@assets/contact-section/blob-2.svg";
+import { Image } from "astro:assets";
+---
+
+<section id="contact-section" class="relative mt-14 2xl:mt-28">
+    <div
+        class="relative w-full flex lg:flex-row flex-col items-start justify-between max-w-360 mx-auto py-6 lg:py-24 px-6 gap-11 md:gap-13 z-10"
+    >
+        <CTA className="lg:sticky lg:top-0 lg:pt-12" />
+        <ContactForm client:visible className="lg:max-w-170" />
+    </div>
+
+    <div class="absolute inset-0 w-full h-full overflow-x-clip">
+        <Image
+            src={Blob1}
+            alt="Blob 1"
+            class="absolute aspect-616/588 w-154 h-auto top-0 -right-83 z-[-2] pointer-events-none select-none blur-[250px]"
+        />
+        <Image
+            src={Blob2}
+            alt="Blob 2"
+            class="absolute aspect-482/372 bottom-0 -left-55 w-120.5 h-auto z-[-2] pointer-events-none select-none blur-[250px]"
+        />
+    </div>
+</section>

@@ -1,0 +1,29 @@
+---
+interface Props {
+    className?: string;
+}
+
+const { className } = Astro.props;
+---
+
+<div
+    class:list={[
+        "w-full flex flex-col items-start justify-start gap-3 md:gap-6",
+        className,
+    ]}
+>
+    <small class="text-blue-page-400 font-bold text-sm md:text-4xl uppercase"
+        >arcoder.dev</small
+    >
+    <div class="gap-2 md:gap-6 flex flex-col items-start justify-start">
+        <h3 class="uppercase text-2xl md:text-[40px] font-bold text-white">
+            Cuéntanos sobre tu proyecto
+        </h3>
+        <p class="text-blue-page-100 font-normal text-base md:text-xl">
+            En ARcoder.dev, transformamos visiones en realidades. Queremos
+            entender tus objetivos para ofrecerte soluciones a medida. Completa
+            este breve formulario y nos pondremos en contacto contigo en menos
+            de 24 horas.
+        </p>
+    </div>
+</div>
