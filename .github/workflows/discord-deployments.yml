@@ -3,23 +3,45 @@ name: Vercel → Discord
 on:
   deployment_status:
 
+permissions:
+  contents: read
+
 jobs:
   notify-discord:
-    if: >
-      github.event.deployment_status.state == 'success'
-
+    if: github.event.deployment_status.state == 'success'
     runs-on: ubuntu-latest
 
     steps:
+      - name: Get branch information
+        id: branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          COMMIT: ${{ github.event.deployment.sha }}
+        run: |
+          BRANCHES=$(gh api \
+            -H "Accept: application/vnd.github+json" \
+            "/repos/${REPOSITORY}/commits/${COMMIT}/branches-where-head" \
+            --jq '.[] | .name')
+
+          echo "Branches found:"
+          echo "$BRANCHES"
+
+          BRANCH=$(echo "$BRANCHES" | head -n 1)
+
+          if [ -z "$BRANCH" ]; then
+            BRANCH="unknown"
+          fi
+
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+
       - name: Send deployment notification to Discord
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_DEPLOYMENTS_WEBHOOK }}
           REPOSITORY: ${{ github.repository }}
           COMMIT: ${{ github.event.deployment.sha }}
-          BRANCH: ${{ github.event.deployment.ref }}
-          STATUS: ${{ github.event.deployment_status.state }}
-          ENVIRONMENT: ${{ github.event.deployment.environment }}
-          DEPLOYMENT_URL: ${{ github.event.deployment_status.environment_url }}
+          BRANCH: ${{ steps.branch.outputs.branch }}
+          ENVIRONMENT: ${{ github.event.deployment_status.environment }}
         run: |
           SHORT_COMMIT="${COMMIT:0:7}"
 
@@ -29,32 +51,31 @@ jobs:
             "username": "Arcoder.dev",
             "embeds": [
               {
-                "title": "🚀 Vercel Deployment Ready",
+                "title": "🚀 Vercel Preview Ready",
                 "description": "**${REPOSITORY}**",
                 "color": 3066993,
                 "fields": [
                   {
-                    "name": "Status",
-                    "value": "🟢 READY",
-                    "inline": true
-                  },
-                  {
-                    "name": "Environment",
-                    "value": "${ENVIRONMENT}",
-                    "inline": true
-                  },
-                  {
-                    "name": "Branch",
+                    "name": "🌿 Branch",
                     "value": "\`${BRANCH}\`",
                     "inline": true
                   },
                   {
-                    "name": "Commit",
+                    "name": "🟢 Status",
+                    "value": "READY",
+                    "inline": true
+                  },
+                  {
+                    "name": "📦 Environment",
+                    "value": "${ENVIRONMENT}",
+                    "inline": true
+                  },
+                  {
+                    "name": "🔖 Commit",
                     "value": "\`${SHORT_COMMIT}\`",
                     "inline": true
                   }
                 ],
-                "url": "${DEPLOYMENT_URL}",
                 "footer": {
                   "text": "arcoder.dev • Vercel"
                 }
