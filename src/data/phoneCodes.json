@@ -58,5 +58,11 @@
     "code": "CR",
     "dialCode": "+506",
     "flag": "🇨🇷"
+  },
+  {
+    "name": "Canadá",
+    "code": "CA",
+    "dialCode": "+1",
+    "flag": "🇨🇦"
   }
 ]
