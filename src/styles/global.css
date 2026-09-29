@@ -51,7 +51,3 @@ body {
 .scroll::-webkit-scrollbar-thumb:hover {
   background: #1976D2;
 }
-
-.prueba {
-  background-color: var(--color-blue-page-900);
-}
