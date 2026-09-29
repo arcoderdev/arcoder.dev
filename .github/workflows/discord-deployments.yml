@@ -1,4 +1,4 @@
-name: Vercel Preview → Discord
+name: Vercel → Discord
 
 on:
   deployment_status:
@@ -6,19 +6,19 @@ on:
 jobs:
   notify-discord:
     if: >
-      github.event.deployment.ref == 'website-oficial' &&
       github.event.deployment_status.state == 'success'
+
     runs-on: ubuntu-latest
 
     steps:
-      - name: Send Vercel deployment to Discord
+      - name: Send deployment notification to Discord
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_DEPLOYMENTS_WEBHOOK }}
           REPOSITORY: ${{ github.repository }}
-          BRANCH: ${{ github.event.deployment.ref }}
           COMMIT: ${{ github.event.deployment.sha }}
-          STATE: ${{ github.event.deployment_status.state }}
-          DESCRIPTION: ${{ github.event.deployment_status.description }}
+          BRANCH: ${{ github.event.deployment.ref }}
+          STATUS: ${{ github.event.deployment_status.state }}
+          ENVIRONMENT: ${{ github.event.deployment.environment }}
           DEPLOYMENT_URL: ${{ github.event.deployment_status.environment_url }}
         run: |
           SHORT_COMMIT="${COMMIT:0:7}"
@@ -29,29 +29,34 @@ jobs:
             "username": "ARCODER Deployments",
             "embeds": [
               {
-                "title": "🚀 Vercel Preview Ready",
+                "title": "🚀 Vercel Deployment Ready",
                 "description": "**${REPOSITORY}**",
-                "color": 5793266,
+                "color": 3066993,
                 "fields": [
-                  {
-                    "name": "Branch",
-                    "value": "\`${BRANCH}\`",
-                    "inline": true
-                  },
                   {
                     "name": "Status",
                     "value": "🟢 READY",
                     "inline": true
                   },
                   {
+                    "name": "Environment",
+                    "value": "${ENVIRONMENT}",
+                    "inline": true
+                  },
+                  {
+                    "name": "Branch",
+                    "value": "\`${BRANCH}\`",
+                    "inline": true
+                  },
+                  {
                     "name": "Commit",
-                    "value": "[\`${SHORT_COMMIT}\`](https://github.com/${REPOSITORY}/commit/${COMMIT})",
+                    "value": "\`${SHORT_COMMIT}\`",
                     "inline": true
                   }
                 ],
                 "url": "${DEPLOYMENT_URL}",
                 "footer": {
-                  "text": "arcoder.dev • Vercel Preview"
+                  "text": "arcoder.dev • Vercel"
                 }
               }
             ]
