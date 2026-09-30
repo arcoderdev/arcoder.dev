@@ -45,13 +45,23 @@ jobs:
         run: |
           SHORT_COMMIT="${COMMIT:0:7}"
 
+          if [ "$BRANCH" = "main" ]; then
+            TITLE="🟢 Vercel Production Ready"
+            STATUS="🟢 READY"
+            FOOTER="arcoder.dev • Vercel Production"
+          else
+            TITLE="🚀 Vercel Preview Ready"
+            STATUS="🟢 READY"
+            FOOTER="arcoder.dev • Vercel Preview"
+          fi
+
           curl -H "Content-Type: application/json" \
             -d @- "$DISCORD_WEBHOOK" <<EOF
           {
             "username": "Arcoder.dev",
             "embeds": [
               {
-                "title": "🚀 Vercel Preview Ready",
+                "title": "$TITLE",
                 "description": "**${REPOSITORY}**",
                 "color": 3066993,
                 "fields": [
@@ -62,7 +72,7 @@ jobs:
                   },
                   {
                     "name": "🟢 Status",
-                    "value": "READY",
+                    "value": "${STATUS}",
                     "inline": true
                   },
                   {
@@ -71,13 +81,13 @@ jobs:
                     "inline": true
                   },
                   {
-                    "name": "🔖 Commit",
+                    "name": "🏷️ Commit",
                     "value": "\`${SHORT_COMMIT}\`",
                     "inline": true
                   }
                 ],
                 "footer": {
-                  "text": "arcoder.dev • Vercel"
+                  "text": "${FOOTER}"
                 }
               }
             ]
