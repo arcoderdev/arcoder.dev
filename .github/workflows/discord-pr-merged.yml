@@ -1,0 +1,74 @@
+name: Pull Request → Discord
+
+on:
+  pull_request:
+    types:
+      - closed
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  notify-merge:
+    if: >
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.base.ref == 'main' &&
+      github.event.pull_request.head.ref == 'website-oficial'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send merge notification to Discord
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_DEPLOYMENTS_WEBHOOK }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+          HEAD_BRANCH: ${{ github.event.pull_request.head.ref }}
+          BASE_BRANCH: ${{ github.event.pull_request.base.ref }}
+          MERGE_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          SHORT_SHA="${MERGE_SHA:0:7}"
+
+          curl -H "Content-Type: application/json" \
+            -d @- "$DISCORD_WEBHOOK" <<EOF
+          {
+            "username": "Acoder.dev",
+            "embeds": [
+              {
+                "title": "🔀 Pull Request Merged",
+                "description": "**${PR_TITLE}**",
+                "color": 5793266,
+                "fields": [
+                  {
+                    "name": "📂 Repository",
+                    "value": "${REPOSITORY}",
+                    "inline": false
+                  },
+                  {
+                    "name": "🌿 Branch",
+                    "value": "\`${HEAD_BRANCH}\` → \`${BASE_BRANCH}\`",
+                    "inline": true
+                  },
+                  {
+                    "name": "👤 Author",
+                    "value": "${AUTHOR}",
+                    "inline": true
+                  },
+                  {
+                    "name": "🔖 Commit",
+                    "value": "\`${SHORT_SHA}\`",
+                    "inline": true
+                  }
+                ],
+                "url": "${PR_URL}",
+                "footer": {
+                  "text": "arcoder.dev • GitHub"
+                }
+              }
+            ]
+          }
+          EOF
