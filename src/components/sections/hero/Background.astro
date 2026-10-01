@@ -1,0 +1,46 @@
+---
+import { Image } from "astro:assets";
+import Picture from "@assets/bg-about.png";
+---
+
+<div
+    class="absolute -top-41.25 left-0 w-full h-180 max-h-[1653px] pointer-events-none -z-10 select-none bg-blue-page-900 isolate bg-about transition duration-300"
+>
+    <Image
+        src={Picture}
+        alt="Imagen de fondo para la sección hero"
+        width={1440}
+        height={773}
+        class="absolute inset-0 w-full h-full object-cover object-top mix-blend-multiply"
+    />
+</div>
+
+<script>
+    function initBackground() {
+        const heroSection = document.querySelector(
+            ".about-hero",
+        ) as HTMLElement | null;
+        const bg = document.querySelector(".bg-about") as HTMLElement | null;
+
+        if (!heroSection || !bg) return;
+
+        const updateHeight = () => {
+            const heightBackground = heroSection.offsetHeight * 0.99;
+            bg.style.height = `${heightBackground + 112 + 112}px`;
+        };
+
+        // Ejecutar inmediatamente
+        updateHeight();
+
+        // Observar cambios de tamaño del contenedor hero (por imágenes, responsive, fuentes, etc.)
+        const resizeObserver = new ResizeObserver(() => {
+            updateHeight();
+        });
+        resizeObserver.observe(heroSection);
+
+        window.addEventListener("load", updateHeight);
+    }
+
+    initBackground();
+    document.addEventListener("astro:page-load", initBackground);
+</script>
