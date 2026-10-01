@@ -12,11 +12,11 @@ const items = [
         label: "Inicio",
     },
     {
-        href: "/projects/",
+        href: "/projects",
         label: "Proyectos",
     },
     {
-        href: "/about/",
+        href: "/about",
         label: "Nosotros",
     },
 ];
@@ -53,7 +53,8 @@ const pathname = Astro.url.pathname;
                         <a
                             href={item.href}
                             class={`px-3 py-1 font-medium text-base text-white ${
-                                pathname === item.href
+                                pathname === item.href ||
+                                pathname === item.href + "/"
                                     ? "underline"
                                     : "hover:underline"
                             }`}
