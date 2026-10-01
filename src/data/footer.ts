@@ -1,6 +1,6 @@
 import { type FooterData } from "@interfaces/footer.interface";
-import FacebookIcon from "@icons/FacebookIcon.astro";
-import InstagramIcon from "@icons/InstagramIcon.astro";
+import FacebookIcon from "@icons/FacebookIcon.svg";
+import InstagramIcon from "@icons/InstagramIcon.svg";
 
 export const footerContent: FooterData = {
     "website_name": "ARcoder.dev",
