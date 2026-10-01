@@ -17,6 +17,8 @@ interface Props {
   title: string;
 }
 
+const isHome = Astro.url.pathname === "/";
+
 const { title } = Astro.props;
 ---
 
@@ -31,7 +33,7 @@ const { title } = Astro.props;
     <title>{title}</title>
   </head>
   <body class="relative">
-    <Header variant="primary" />
+    <Header variant={isHome ? "primary" : "secondary"} />
     <main>
       <slot />
     </main>
