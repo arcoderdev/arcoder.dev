@@ -20,6 +20,9 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.3.3
         version: 4.3.3(vite@8.2.1(esbuild@0.28.2)(jiti@2.7.0))
+      animejs:
+        specifier: ^4.5.0
+        version: 4.5.0
       astro:
         specifier: ^7.2.3
         version: 7.2.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(jiti@2.7.0)
@@ -35,6 +38,10 @@ importers:
       tailwindcss:
         specifier: ^4.3.3
         version: 4.3.3
+    devDependencies:
+      '@types/animejs':
+        specifier: ^4.0.0
+        version: 4.0.0
 
 packages:
 
@@ -914,6 +921,10 @@ packages:
   '@tybys/wasm-util@0.10.3':
     resolution: {integrity: sha512-F3fo1MYrRJYL3zER0OUOmkutjr1Vp23m7OsSgp7nq4SP6OqX6C/56XFIPAl5bt3zaBRjmW7SGz3u/6LwFpYcOg==}
 
+  '@types/animejs@4.0.0':
+    resolution: {integrity: sha512-DAjSUvkZpOZ7J7I/F6mtcOhSdrBCLZvOTod43rlWSwpNWV2kIHTr3tVaXas6rZrhy9b27Mbm54CZnKVOG0ep9A==}
+    deprecated: This is a stub types definition. animejs provides its own type definitions, so you do not need this installed.
+
   '@types/estree-jsx@1.0.5':
     resolution: {integrity: sha512-52CcUVNFyfb1A2ALocQw/Dd1BQFNmSdkuC3BkZ6iqhdMfQz7JWOFRuJFloOzjk+6WijU56m9oKXFAXc7o3Towg==}
 
@@ -938,6 +949,17 @@ packages:
   am-i-vibing@0.4.0:
     resolution: {integrity: sha512-MxT4XZL7pzLHpuvhDKdMaQHMGGkJDLluKBLsbstn+8wv9sWcFT6h+0ve9qkml95amVTZtZV83gQe2hY+ojgHLg==}
     hasBin: true
+
+  animejs@4.5.0:
+    resolution: {integrity: sha512-NQimYX+lz8WaXonGS9zVVoviCIAjONeJayxacUditaivYLqyXgGjFKjuyl0aUUhFKm5MriX9ty1TGovNzoJQWA==}
+    peerDependencies:
+      '@types/three': '>=0.150.0'
+      three: '>=0.150.0'
+    peerDependenciesMeta:
+      '@types/three':
+        optional: true
+      three:
+        optional: true
 
   ansi-styles@4.3.0:
     resolution: {integrity: sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg==}
@@ -2676,6 +2698,13 @@ snapshots:
       tslib: 2.8.1
     optional: true
 
+  '@types/animejs@4.0.0':
+    dependencies:
+      animejs: 4.5.0
+    transitivePeerDependencies:
+      - '@types/three'
+      - three
+
   '@types/estree-jsx@1.0.5':
     dependencies:
       '@types/estree': 1.0.9
@@ -2701,6 +2730,8 @@ snapshots:
   am-i-vibing@0.4.0:
     dependencies:
       process-ancestry: 0.1.0
+
+  animejs@4.5.0: {}
 
   ansi-styles@4.3.0:
     dependencies:
