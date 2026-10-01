@@ -1,0 +1,86 @@
+---
+import type { TeamMember } from "@data/team-data";
+import { Image } from "astro:assets";
+import ESC from "@assets/esc.png";
+
+interface Props {
+    teamMember: TeamMember;
+}
+
+const { teamMember } = Astro.props as Props;
+const { fullName, socialMedias, description, positions, image } = teamMember;
+---
+
+<article
+    class="flex items-start justify-center flex-col md:flex-row gap-3 md:gap-6 2xl:gap-11 w-full max-w-360"
+>
+    <div
+        class="bg-white/10 flex backdrop-blur-md rounded-full md:rounded-4xl w-14 h-14 aspect-square md:aspect-auto md:w-auto md:h-full max-h-[224px] md:max-h-[516px] shadow-md group overflow-hidden mx-auto md:mx-0"
+    >
+        <Image
+            src={image}
+            alt=""
+            width={832}
+            height={1256}
+            class={"w-full max-w-80 2xl:max-w-100 aspect-832/1256 object-cover block group-hover:scale-120 duration-300 ease-in-out"}
+        />
+    </div>
+
+    <div
+        class="w-full lg:max-w-168.75 flex flex-col items-center justify-center gap-8"
+    >
+        <div
+            class="p-6 bg-white/10 flex flex-col gap-11 backdrop-blur-md rounded-4xl w-full shadow-md"
+        >
+            <header class="flex flex-col gap-8">
+                <div class="flex flex-col gap-3">
+                    <h4
+                        class="lg:leading-12 lg:tracking-[4px] text-white font-bold lg:text-[40px] text-xl uppercase"
+                    >
+                        {fullName}
+                    </h4>
+                    <small
+                        class="lg:leading-6 font-medium text-base lg:text-xl text-white/40 w-full max-w-125"
+                        >{positions.join(" | ")}</small
+                    >
+                </div>
+                <p class="text-white text-base lg:text-xl font-normal">
+                    {description}
+                </p>
+            </header>
+            <div
+                class="flex items-center justify-center lg:justify-start gap-8"
+            >
+                {
+                    socialMedias.map(({ icon, name, url }) => {
+                        const Icon = icon;
+                        return (
+                            <a
+                                href={url}
+                                target="_blank"
+                                rel="noopener noreferrer group"
+                                class="focus:outline-none active:outline-none outline-none"
+                            >
+                                <Icon
+                                    class={
+                                        "size-8 fill-white/50 transition-colors hover:fill-white duration-300 ease-in"
+                                    }
+                                />
+                            </a>
+                        );
+                    })
+                }
+            </div>
+        </div>
+        <button
+            class="flex items-center justify-center gap-4 rounded-[50px] bg-white/10 backdrop-blur-md px-4 py-4 cursor-pointer text-white text-base lg:text-xl scale-110 hover:scale-[1.01] transition-all duration-300 ease-in-out outline-none active:outline-none hover:bg-white/20"
+        >
+            <Image
+                src={ESC}
+                alt="close"
+                class="w-6.75 h-auto aspec-27/23 object-cover"
+            />
+            Cerrar</button
+        >
+    </div>
+</article>

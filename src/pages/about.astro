@@ -1,7 +1,57 @@
 ---
+import ImagesContainer from "@components/sections/about/ImagesContainer.astro";
+import MisionVisionSection from "@components/sections/about/MisionVisionSection.astro";
+import OurHistorySection from "@components/sections/about/OurHistorySection.astro";
+import TeamSection from "@components/sections/about/team/TeamSection.astro";
+import Background from "@components/sections/hero/Background.astro";
+import HeroContainer from "@components/sections/hero/HeroContainer.astro";
+import Tagline from "@components/sections/hero/Tagline.astro";
 import Main from "@layouts/Main.astro";
 ---
 
 <Main title="ARcoder | Sobre Nosotros">
-    <h1 class="text-center text-4xl font-bold text-white">Sobre Nosotros</h1>
+    <HeroContainer
+        className="flex flex-col lg:flex-row items-center justify-between mt-6 gap-10 sm:mt-16 mb-14 2xl:mb-28 about-hero"
+    >
+        <Background />
+        <Tagline
+            tag="¿Quiénes somos?"
+            label="Transformamos tus ideas en realidades que impactan."
+            description="Desde el diseño web y multimedia hasta la realidad aumentada más innovadora, en ARCODER.DEV construimos las herramientas digitales que necesitas para conectar, impactar y expandir tu presencia."
+            align="left"
+            button="custom"
+            ctaText="Conoce más sobre nosotros"
+            ctaLink="#"
+        />
+        <ImagesContainer />
+    </HeroContainer>
+
+    <OurHistorySection />
+
+    <MisionVisionSection
+        id="vision"
+        tag="Nuestra visión"
+        title="El futuro digital, hoy"
+        content={[
+            "Visualizamos un futuro donde la realidad aumentada y virtual sean herramientas cotidianas que enriquezcan cada aspecto de la vida.",
+            "Nos esforzamos por ser líderes en la creación de experiencias inmersivas, haciendo que el futuro digital sea una realidad accesible y emocionante para todos.",
+        ]}
+        image="/mision-vision/vision.png"
+        orientation="left"
+    />
+
+    <MisionVisionSection
+        id="mision"
+        tag="Nuestra misión"
+        title="Dando vida a tus ideas."
+        content={[
+            "En ARCODER.DEV, nuestra misión es simple pero poderosa: transformar tus conceptos en realidades digitales impactantes.",
+            "Nos dedicamos a crear soluciones innovadoras en AR y VR que no solo cautivan, sino que también generan valor real para nuestros clientes.",
+        ]}
+        image="/mision-vision/mision.png"
+        orientation="right"
+        className="mt-14"
+    />
+
+    <TeamSection />
 </Main>

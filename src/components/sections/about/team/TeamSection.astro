@@ -1,0 +1,157 @@
+---
+import HeadingTeam from "./HeadingTeam.astro";
+import ModalDetails from "./ModalDetails.astro";
+import TeamCard from "./TeamCard.astro";
+import { teamData } from "@data/team-data";
+import Blob1 from "@assets/contact-section/blob-1.svg";
+import Blob2 from "@assets/contact-section/blob-2.svg";
+import { Image } from "astro:assets";
+---
+
+<section id="team" class="mt-14 2xl:mt-28 relative">
+    <div
+        class="max-w-360 w-full mx-auto flex flex-col gap-11 lg:gap-16 px-4 sm:px-6"
+    >
+        <HeadingTeam
+            title="Conoce a nuestro equipo"
+            description="Las mentes creativas detrás de ARcoder.dev. Somos un grupo de desarrolladores, diseñadores y artistas 3D apasionados por transformar tus ideas en realidades digitales impactantes."
+        />
+
+        <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 xl:gap-12 w-full justify-items-center"
+        >
+            {teamData.map((member) => <TeamCard member={member} />)}
+        </div>
+    </div>
+
+    <!-- Modales para cada integrante -->
+    {
+        teamData.map((member) => (
+            <dialog
+                id={`team-modal-${member.id}`}
+                class="team-modal fixed inset-0 m-auto bg-transparent border-0 p-4 max-w-360 w-full outline-none backdrop:bg-black/80 backdrop:backdrop-blur-2xl overflow-y-auto"
+            >
+                <ModalDetails teamMember={member} />
+            </dialog>
+        ))
+    }
+
+    <div class="absolute inset-0 w-full h-full overflow-x-clip -z-[1]">
+        <Image
+            src={Blob1}
+            alt="Blob 1"
+            class="absolute aspect-616/588 w-154 h-auto top-100 md:-top-50 -right-83 z-[-2] pointer-events-none select-none blur-[250px]"
+        />
+        <Image
+            src={Blob2}
+            alt="Blob 2"
+            class="absolute aspect-482/372 bottom-0 -left-55 w-120.5 h-auto z-[-2] pointer-events-none select-none blur-[250px]"
+        />
+    </div>
+</section>
+
+<style>
+    .team-modal {
+        border: none;
+        background: transparent;
+        padding: 1rem;
+        outline: none;
+    }
+
+    .team-modal::backdrop {
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+
+    .team-modal[open] {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+
+<script>
+    import { animate } from "animejs";
+
+    function setupTeamModals() {
+        const cards = document.querySelectorAll<HTMLElement>(
+            ".team-card-container",
+        );
+        const modals =
+            document.querySelectorAll<HTMLDialogElement>("dialog.team-modal");
+
+        cards.forEach((card) => {
+            card.addEventListener("click", () => {
+                const memberId = card.getAttribute("data-member-id");
+                if (!memberId) return;
+
+                const modal = document.getElementById(
+                    `team-modal-${memberId}`,
+                ) as HTMLDialogElement | null;
+                if (!modal) return;
+
+                const content = modal.querySelector("article");
+
+                document.body.style.overflow = "hidden";
+                modal.showModal();
+
+                if (content) {
+                    animate(content, {
+                        opacity: [0, 1],
+                        scale: [0.85, 1],
+                        translateY: [30, 0],
+                        ease: "outBack(1.5)",
+                        duration: 500,
+                    });
+                }
+            });
+        });
+
+        modals.forEach((modal) => {
+            const content = modal.querySelector("article");
+
+            const closeModal = () => {
+                if (content) {
+                    animate(content, {
+                        opacity: [1, 0],
+                        scale: [1, 0.9],
+                        translateY: [0, 20],
+                        ease: "inQuad",
+                        duration: 250,
+                        onComplete: () => {
+                            modal.close();
+                            document.body.style.overflow = "";
+                        },
+                    });
+                } else {
+                    modal.close();
+                    document.body.style.overflow = "";
+                }
+            };
+
+            const closeButtons =
+                modal.querySelectorAll<HTMLButtonElement>("button");
+            closeButtons.forEach((btn) =>
+                btn.addEventListener("click", closeModal),
+            );
+
+            modal.addEventListener("click", (e) => {
+                if (e.target === modal) closeModal();
+            });
+
+            // Soporte para tecla Escape nativa del navegador
+            modal.addEventListener("cancel", (e) => {
+                e.preventDefault();
+                closeModal();
+            });
+        });
+    }
+
+    document.addEventListener("astro:page-load", setupTeamModals);
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", setupTeamModals);
+    } else {
+        setupTeamModals();
+    }
+</script>

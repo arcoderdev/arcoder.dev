@@ -1,0 +1,28 @@
+---
+import { Image } from "astro:assets";
+import HeroBlob from "@assets/about-section/hero-blob-about.svg";
+import AboutImage from "@assets/about-section/about-image.png";
+---
+
+<article
+    class="hidden lg:flex relative w-full max-w-90 lg:max-w-115 aspect-376/379 items-center justify-center shrink-0"
+>
+    <!-- Blob de fondo desplazado hacia abajo e izquierda -->
+    <Image
+        src={HeroBlob}
+        alt="Fondo decorativo"
+        width={376}
+        height={379}
+        class="absolute inset-0 w-full h-full object-contain translate-y-5 -translate-x-1 select-none pointer-events-none z-0"
+    />
+    <!-- Imagen con máscara blob encima -->
+    <div class="relative w-full h-full mask-hero-blob z-10 overflow-hidden">
+        <Image
+            src={AboutImage}
+            alt="Persona usando dispositivo de realidad virtual"
+            width={500}
+            height={500}
+            class="w-full h-full object-cover object-[center_20%] scale-110"
+        />
+    </div>
+</article>
