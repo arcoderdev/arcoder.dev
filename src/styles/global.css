@@ -28,11 +28,35 @@
   .clip {
     clip-path: polygon(0 12.06%, 100% 0, 100% 100%, 0 100%);
   }
+
+  .mask-hero-blob {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 376 379' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M233.813 96.6061C277.773 127.386 349.403 122.727 368.622 172.833C388.963 225.863 361.814 288.485 323.491 330.406C288.174 369.04 232.687 380.736 180.38 378.75C137.119 377.107 100.613 351.093 69.7182 320.767C43.7885 295.315 34.7506 260.969 24.7912 226.027C12.5227 182.983 -11.3701 139.327 6.28022 98.1954C26.9966 49.9192 69.2517 0.368352 121.784 0.00142005C173.043 -0.356616 191.822 67.205 233.813 96.6061Z' fill='black'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 376 379' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M233.813 96.6061C277.773 127.386 349.403 122.727 368.622 172.833C388.963 225.863 361.814 288.485 323.491 330.406C288.174 369.04 232.687 380.736 180.38 378.75C137.119 377.107 100.613 351.093 69.7182 320.767C43.7885 295.315 34.7506 260.969 24.7912 226.027C12.5227 182.983 -11.3701 139.327 6.28022 98.1954C26.9966 49.9192 69.2517 0.368352 121.784 0.00142005C173.043 -0.356616 191.822 67.205 233.813 96.6061Z' fill='black'/%3E%3C/svg%3E");
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+  }
+
+  .bg-square {
+    background: hsla(207, 90%, 61%, 1);
+
+    background: radial-gradient(circle, hsla(207, 90%, 61%, 1) 1%, hsla(210, 91%, 21%, 1) 100%);
+
+    background: -moz-radial-gradient(circle, hsla(207, 90%, 61%, 1) 1%, hsla(210, 91%, 21%, 1) 100%);
+
+    background: -webkit-radial-gradient(circle, hsla(207, 90%, 61%, 1) 1%, hsla(210, 91%, 21%, 1) 100%);
+
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr="#42A5F5", endColorstr="#053565", GradientType=1);
+  }
 }
 
 body {
   font-family: 'Poppins', sans-serif;
   background-color: var(--color-black-page-800);
+  scroll-behavior: smooth;
 }
 
 .scroll::-webkit-scrollbar {
