@@ -1,7 +1,77 @@
 ---
+import HeroContainer from "@components/sections/hero/HeroContainer.astro";
+import Tagline from "@components/sections/hero/Tagline.astro";
 import Main from "@layouts/Main.astro";
+import Men from "@assets/projects/men.svg";
+import Women from "@assets/projects/Women.svg";
+import { Image } from "astro:assets";
+import Shadows from "@components/sections/projects/Shadows";
+import ProjectsSection from "@components/sections/projects/ProjectsSection";
+import TestimonialsSection from "@components/sections/projects/TestimonialsSection";
 ---
 
 <Main title="ARcoder | Proyectos">
-    <h1 class="text-center text-4xl font-bold text-white">Proyectos</h1>
+    <Shadows />
+
+    <HeroContainer
+        className="flex items-center px-6 py-20 md:py-24 justify-center mt-6 sm:mt-16 mb-14 2xl:mb-28 relative"
+    >
+        <Tagline
+            tag="Nuestro Portafolio"
+            label="La Innovación en Acción"
+            description="Explora una selección de nuestros trabajos más recientes en desarrollo web, experiencias inmersivas, diseño 3D y edición multimedia, tanto para grandes marcas como para ideas personales."
+            align="center"
+        />
+
+        <div
+            class="orbit absolute top-0 left-6 size-16 md:size-30 aspect-square lg:size-52 bg-white/10 rounded-full backdrop-blur-xl overflow-hidden border border-white/10 flex items-end justify-center -z-[1]"
+            style="--delay: 0s;"
+        >
+            <Image
+                src={Men}
+                alt={""}
+                width={108}
+                height={144}
+                class={"aspect-108/144 w-auto h-4/5"}
+            />
+        </div>
+        <div
+            class="orbit absolute bottom-0 right-6 size-16 md:size-30 aspect-square lg:size-52 bg-white/10 rounded-full backdrop-blur-xl overflow-hidden border border-white/10 flex items-end justify-end -z-[1]"
+            style="--delay: 1s;"
+        >
+            <Image
+                src={Women}
+                alt={""}
+                width={162}
+                height={139}
+                class={"aspect-162/139 w-4/5 h-auto"}
+            />
+        </div>
+    </HeroContainer>
+
+    <ProjectsSection client:load />
+
+    <TestimonialsSection client:load />
 </Main>
+
+<style>
+    @keyframes orbit {
+        0% {
+            transform: translateY(0);
+        }
+        35% {
+            transform: translateY(10px);
+        }
+        70% {
+            transform: translateY(20px);
+        }
+        100% {
+            transform: translateY(0);
+        }
+    }
+
+    .orbit {
+        animation: orbit 5s linear infinite;
+        animation-delay: var(--delay);
+    }
+</style>
