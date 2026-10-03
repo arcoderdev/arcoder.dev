@@ -14,9 +14,9 @@ interface Props {
     /** Botón */
     button?: "cta" | "custom";
     /** Texto del botón */
-    ctaText: string;
+    ctaText?: string;
     /** URL del botón */
-    ctaLink: string;
+    ctaLink?: string;
 }
 
 const {
@@ -64,14 +64,14 @@ const alignText = {
         </div>
     </div>
     {
-        button === "cta" && (
+        button === "cta" && ctaText && ctaLink && (
             <Button variant="cta" text={ctaText} url={ctaLink}>
                 <MoveRight slot="icon" class="hidden lg:inline-flex" />
             </Button>
         )
     }
     {
-        button === "custom" && (
+        button === "custom" && ctaText && ctaLink && (
             <a
                 href={ctaLink}
                 class="px-8 py-3 bg-white text-blue-page-600 shadow-[0px_0px_12px_0px_rgba(255,255,255,0.25)] rounded-lg font-medium text-base md:text-xl w-full sm:w-fit hover:bg-blue-page-100 transition duration-500 ease-in-out active:bg-blue-page-100 focus:bg-blue-page-100"
