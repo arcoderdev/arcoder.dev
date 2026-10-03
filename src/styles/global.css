@@ -75,3 +75,25 @@ body {
 .scroll::-webkit-scrollbar-thumb:hover {
   background: #1976D2;
 }
+
+.scroll-filter::-webkit-scrollbar {
+  height: 6px;
+}
+
+.scroll-filter::-webkit-scrollbar-track {
+  background: #101014;
+  border-radius: 4px;
+}
+
+.scroll-filter::-webkit-scrollbar-thumb {
+  background: #1976d2;
+  border-radius: 4px;
+}
+
+.scroll-filter::-webkit-scrollbar-thumb:hover {
+  background: #1976d2;
+}
+
+.radialImage {
+  background: radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0.00) 0%, #101014 100%);
+}
