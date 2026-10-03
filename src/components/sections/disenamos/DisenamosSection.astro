@@ -16,24 +16,28 @@ const cards = {
 
 <section
   id="disenamos-section"
-  class="relative w-full min-h-dvh overflow-hidden py-16 flex flex-col justify-start"
+  class="relative w-full min-h-dvh overflow-hidden py-8 xl:py-16 flex flex-col justify-start"
 >
   <div
-    class="w-full max-w-360 mx-auto px-6 2xl:px-0 flex flex-col gap-8 sm:gap-10 md:gap-20"
+    class="disenamos-container w-full max-w-360 mx-auto px-6 2xl:px-0 flex flex-col"
   >
-    <header class="flex flex-col md:flex-row items-start justify-start gap-3">
+    <header
+      class="disenamos-header flex flex-col md:flex-row items-start justify-start gap-3"
+    >
       <LineSquiggle
-        class="w-8 md:w-15 aspect-square h-auto object-cover text-white"
+        class="disenamos-header-icon w-8 md:w-15 aspect-square h-auto object-cover text-white"
         width={28}
         height={28}
       />
       <div class="flex flex-col text-left">
         <h2
-          class="text-2xl md:text-[40px] font-bold text-white uppercase tracking-wider drop-shadow-[0_4px_4px_rgba(144,202,249,0.1)]"
+          class="disenamos-header-title text-2xl md:text-[40px] font-bold text-white uppercase tracking-wider drop-shadow-[0_4px_4px_rgba(144,202,249,0.1)]"
         >
           Diseñamos
         </h2>
-        <p class="text-base sm:text-lg lg:text-xl text-white font-normal">
+        <p
+          class="disenamos-header-desc text-base sm:text-lg lg:text-xl text-white font-normal"
+        >
           Cada proyecto comienza con una idea brillante.
         </p>
       </div>
@@ -142,7 +146,13 @@ const cards = {
     const getScrollAmount = () => {
       const trackWidth = track.scrollWidth;
       const viewportWidth = window.innerWidth;
-      const extraMargin = window.innerWidth < 768 ? 40 : 120;
+      const isShortLandscape =
+        window.innerHeight <= 600 && window.innerWidth > window.innerHeight;
+      const extraMargin = isShortLandscape
+        ? 30
+        : window.innerWidth < 768
+          ? 40
+          : 120;
       return -(trackWidth - viewportWidth + extraMargin);
     };
 
@@ -156,8 +166,8 @@ const cards = {
 
     mm = gsap.matchMedia();
 
-    // DESKTOP: >= 640px (Comportamiento original de scroll horizontal)
-    mm.add("(min-width: 640px)", () => {
+    // DESKTOP & LANDSCAPE: >= 640px o en modo horizontal
+    mm.add("(min-width: 640px), (orientation: landscape)", () => {
       const slides = gsap.utils.toArray<HTMLElement>(".disenamos-slide");
       gsap.set(slides, { clearProps: "all" });
       gsap.set(track, { clearProps: "all" });
@@ -246,8 +256,8 @@ const cards = {
       );
     });
 
-    // MOBILE: < 640px (Cards stackeándose unas sobre otras con sus respectivas animaciones)
-    mm.add("(max-width: 639px)", () => {
+    // MOBILE PORTRAIT: < 640px en vertical (Cards apiladas)
+    mm.add("(max-width: 639px) and (orientation: portrait)", () => {
       const slides = gsap.utils.toArray<HTMLElement>(".disenamos-slide");
       if (!slides.length) return;
 
@@ -430,6 +440,14 @@ const cards = {
 
   // Reiniciar en transiciones de página de Astro
   document.addEventListener("astro:page-load", initDisenamosAnimation);
+
+  // Manejar cambio de orientación y redimensionado de forma fluida
+  window.addEventListener("orientationchange", () => {
+    setTimeout(() => {
+      initDisenamosAnimation();
+      ScrollTrigger.refresh();
+    }, 250);
+  });
 </script>
 
 <style>
@@ -444,5 +462,47 @@ const cards = {
       var(--color-black-page-800),
       transparent 100%
     );
+  }
+
+  /* Optimización para Landscape en móviles y pantallas de poca altura */
+  @media (orientation: landscape) and (max-height: 600px), (max-height: 520px) {
+    #disenamos-section {
+      padding-top: 1rem !important;
+      padding-bottom: 1rem !important;
+      min-height: 100dvh !important;
+      justify-content: center !important;
+    }
+
+    .disenamos-container {
+      gap: 0.5rem !important;
+      padding-left: 1.5rem !important;
+      padding-right: 1.5rem !important;
+    }
+
+    .disenamos-header {
+      flex-direction: row !important;
+      align-items: center !important;
+      gap: 0.75rem !important;
+    }
+
+    .disenamos-header-icon {
+      width: 1.75rem !important;
+      height: 1.75rem !important;
+    }
+
+    .disenamos-header-title {
+      font-size: 1.25rem !important;
+      line-height: 1.5rem !important;
+    }
+
+    .disenamos-header-desc {
+      font-size: 0.75rem !important;
+      line-height: 1rem !important;
+    }
+
+    #disenamos-slider-track {
+      gap: 2rem !important;
+      padding-right: 6rem !important;
+    }
   }
 </style>

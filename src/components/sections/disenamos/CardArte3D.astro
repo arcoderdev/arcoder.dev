@@ -25,3 +25,12 @@ const { title, description } = Astro.props;
     className="w-3/4 h-full"
   />
 </CardBase>
+
+<style>
+  @media (orientation: landscape) and (max-height: 600px), (max-height: 520px) {
+    :global(#arte-3d-model) {
+      width: 100% !important;
+      height: 100% !important;
+    }
+  }
+</style>

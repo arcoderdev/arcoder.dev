@@ -12,10 +12,10 @@ const { title, description } = Astro.props;
 
 <CardBase title={title} description={description}>
   <div
-    class="relative mt-12 lg:mt-0 w-full max-w-125 aspect-578/800 flex items-center justify-center"
+    class="disenamos-uxui-mockup relative mt-12 lg:mt-0 w-full max-w-md aspect-578/800 flex items-center justify-center"
   >
     <div
-      class="absolute left-[21%] top-[11.5%] w-[45%] h-[68%] overflow-hidden rounded-[18px] sm:rounded-4xl z-10"
+      class="disenamos-uxui-screen absolute left-[21%] top-[11.5%] w-[45%] h-[68%] overflow-hidden rounded-[18px] sm:rounded-4xl z-10"
     >
       <img
         id="iphone-web-screen"
@@ -32,3 +32,18 @@ const { title, description } = Astro.props;
     />
   </div>
 </CardBase>
+
+<style>
+  @media (orientation: landscape) and (max-height: 600px), (max-height: 520px) {
+    .disenamos-uxui-mockup {
+      margin-top: 0 !important;
+      height: 100% !important;
+      width: auto !important;
+      max-width: 100% !important;
+    }
+
+    .disenamos-uxui-screen {
+      border-radius: 10px !important;
+    }
+  }
+</style>

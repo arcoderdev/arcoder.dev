@@ -13,14 +13,62 @@ const { title, description } = Astro.props;
     class="disenamos-card relative w-full sm:min-h-140 lg:max-h-165.5 lg:min-h-165 shrink-0 flex flex-col justify-between"
 >
     <div
-        class="w-full h-[50%] sm:h-95 lg:h-138.25 flex items-center justify-center overflow-hidden aspect-square"
+        class="disenamos-media-container w-full h-[50%] sm:h-95 lg:h-138.25 flex items-center justify-center overflow-hidden aspect-square"
     >
         <slot />
     </div>
 
     <div
-        class="absolute top-24 sm:-top-36 md:-top-1 sm:left-0 w-full h-full z-20 flex flex-col items-start justify-end gap-3 pointer-events-none"
+        class="disenamos-heading-container absolute top-20 sm:-top-32 md:-top-12 sm:left-0 w-full h-full z-20 flex flex-col items-start justify-end gap-3 pointer-events-none"
     >
         <Heading title={title} description={description} />
     </div>
 </article>
+
+<style>
+    @media (orientation: landscape) and (max-height: 600px),
+        (max-height: 520px) {
+        .disenamos-card {
+            min-height: auto !important;
+            max-height: none !important;
+            height: auto !important;
+            width: auto !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: flex-start !important;
+            align-items: flex-start !important;
+        }
+
+        .disenamos-media-container {
+            height: min(190px, 48vh) !important;
+            width: min(190px, 48vh) !important;
+            max-height: 48vh !important;
+            max-width: 48vh !important;
+            aspect-ratio: 1 / 1 !important;
+            margin: 0 auto !important;
+        }
+
+        .disenamos-heading-container {
+            position: relative !important;
+            top: auto !important;
+            left: auto !important;
+            width: 100% !important;
+            max-width: min(220px, 50vw) !important;
+            height: auto !important;
+            margin-top: 0.35rem !important;
+            pointer-events: auto !important;
+            justify-content: flex-start !important;
+            gap: 0.25rem !important;
+        }
+
+        .disenamos-heading-container :global(h3) {
+            font-size: 0.875rem !important;
+            line-height: 1.125rem !important;
+        }
+
+        .disenamos-heading-container :global(p) {
+            font-size: 0.6875rem !important;
+            line-height: 0.875rem !important;
+        }
+    }
+</style>

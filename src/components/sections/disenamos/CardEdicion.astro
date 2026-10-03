@@ -11,7 +11,7 @@ const { title, description } = Astro.props;
 
 <CardBase title={title} description={description}>
   <div
-    class="relative w-full flex items-center justify-center max-w-125 aspect-800/533 rounded-2xl"
+    class="disenamos-edicion-mockup relative w-full flex items-center justify-center max-w-125 aspect-800/533 rounded-2xl"
   >
     <div class="absolute inset-0 overflow-hidden z-10 rounded-2xl">
       <div
@@ -40,5 +40,12 @@ const { title, description } = Astro.props;
   video::-webkit-media-controls-start-playback-button {
     display: none !important;
     -webkit-appearance: none !important;
+  }
+
+  @media (orientation: landscape) and (max-height: 600px), (max-height: 520px) {
+    .disenamos-edicion-mockup {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
   }
 </style>
