@@ -1,0 +1,34 @@
+---
+import ContactSection from "@components/sections/contact/ContactSection.astro";
+import HeroImage from "@components/sections/experiencias-inmersivas/HeroImage.astro";
+import HeroContainer from "@components/sections/hero/HeroContainer.astro";
+import Tagline from "@components/sections/hero/Tagline.astro";
+import Main from "@layouts/Main.astro";
+import InteractiveSection from "@components/sections/experiencias-inmersivas/InteractiveSection.astro";
+import AplicationSection from "@components/sections/experiencias-inmersivas/AplicationSection.astro";
+---
+
+<Main
+    title="Visualización 3D y experiencias inmersivas en AR y VR. | ARcoder.dev"
+>
+    <HeroContainer
+        className="flex flex-col lg:flex-row items-center justify-between mt-6 gap-10 sm:mt-16 mb-14 2xl:mb-28 about-hero"
+    >
+        <Tagline
+            tag="Experiencias AR/VR."
+            label="Explora antes de construir."
+            description="Creamos recorridos virtuales interactivos para arquitectura, instituciones, museos y espacios comerciales, accesibles desde cualquier dispositivo."
+            align="left"
+            button="cta"
+            ctaText="Solicitar Demo"
+            ctaLink="#"
+        />
+        <HeroImage />
+    </HeroContainer>
+
+    <InteractiveSection />
+
+    <AplicationSection />
+
+    <ContactSection />
+</Main>

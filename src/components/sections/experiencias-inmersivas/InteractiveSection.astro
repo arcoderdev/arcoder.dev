@@ -1,0 +1,22 @@
+---
+import Travel from "./Travel.astro";
+---
+
+<section id="recorrido" class="relative mt-14 2xl:mt-28">
+    <div
+        id="travel-pin-wrapper"
+        class="relative w-full flex flex-col items-center justify-center max-w-360 mx-auto py-6 lg:py-24 px-6 gap-11 md:gap-22.25 z-10"
+    >
+        <div class="text-white">
+            <h3 class="text-xl lg:text-4xl font-semibold text-center mb-1">
+                Visualización 3D y experiencias inmersivas en AR y VR
+            </h3>
+            <p class="text-base lg:text-xl text-white/80 text-center">
+                Un recorrido virtual permite explorar el entorno del proyecto,
+                sin limitarse a imágenes estáticas o videos prerrenderizados.
+            </p>
+        </div>
+
+        <Travel />
+    </div>
+</section>

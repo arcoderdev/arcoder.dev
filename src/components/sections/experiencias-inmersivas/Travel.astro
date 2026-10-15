@@ -1,0 +1,387 @@
+---
+import CardMilestone from "./CardMilestone.astro";
+---
+
+<div
+    id="travel-mockup-container"
+    class="travel-mockup-container relative w-full max-w-212.5 aspect-678/490 flex items-center justify-center select-none"
+>
+    <div
+        id="travel-screen"
+        class="travel-screen absolute overflow-hidden bg-black"
+        style="left: 12.83%; top: 4.29%; width: 74.48%; height: 64.69%; border-radius: 4px 4px 0 0;"
+    >
+        <canvas id="travel-canvas" class="w-full h-full object-cover block"
+        ></canvas>
+
+        <div
+            class="screen-milestones absolute inset-0 flex items-center justify-center pointer-events-none z-20 p-4"
+        >
+            <div
+                id="milestone-intro"
+                class="milestone-card flex flex-col items-center gap-2 text-center"
+            >
+                <div
+                    class="px-3.5 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-white text-xs font-medium shadow-2xl flex items-center gap-2"
+                >
+                    <span>Desplaza para explorar el recorrido</span>
+                </div>
+            </div>
+
+            <CardMilestone
+                id="milestone-interactivo"
+                title="Control 100% Interactivo"
+                description="Navega libremente con control total en tiempo real por cada espacio del proyecto."
+                color="#FF7E80"
+                className="md:absolute md:bottom-12 md:left-12 md:max-w-[45%] hidden md:opacity-0"
+            />
+
+            <CardMilestone
+                id="milestone-360"
+                title="Inmersión Panorámica Total"
+                description="Perspectiva completa de 360 grados para apreciar detalles arquitectónicos desde cualquier ángulo."
+                color="#7EC5FF"
+                className="md:absolute md:right-4 md:max-w-[45%] hidden md:opacity-0"
+            />
+
+            <CardMilestone
+                id="milestone-webgl"
+                title="Rendimiento Gráfico Fluido"
+                description="Renderizado acelerado por GPU que garantiza 60 FPS sin sobrecalentar el dispositivo."
+                color="#85FF7E"
+                className="md:absolute md:top-12 md:right-1/2 md:translate-x-1/2 md:max-w-[45%] hidden md:opacity-0"
+            />
+
+            <CardMilestone
+                id="milestone-textures"
+                title="Texturas de Alta Definición"
+                description="Texturas optimizadas para cargar rápidamente en cualquier dispositivo sin comprometer la calidad visual."
+                color="#D866ED"
+                className="md:absolute md:top-44 md:right-12 md:max-w-[45%] hidden md:opacity-0"
+            />
+
+            <CardMilestone
+                id="milestone-cero"
+                title="Cero Instalaciones"
+                description="Compatible al 100% con teléfonos, tablets y computadoras directamente desde el navegador."
+                color="#FFEC7E"
+                className="md:absolute md:bottom-12 md:right-1/2 md:translate-x-1/2 md:max-w-[45%] hidden md:opacity-0"
+            />
+        </div>
+    </div>
+
+    <img
+        src="/mockups/laptop.png"
+        alt="Laptop Mockup"
+        width="678"
+        height="490"
+        class="absolute inset-0 w-full h-full object-contain pointer-events-none z-30 select-none"
+        style="mask-image: linear-gradient(to bottom, black 75%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 75%, transparent 100%);"
+        loading="eager"
+        decoding="async"
+    />
+</div>
+
+<style>
+    .milestone-card {
+        position: absolute;
+        will-change: transform, opacity;
+    }
+</style>
+
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    function initTravelScroll() {
+        const pinWrapper = document.getElementById("travel-pin-wrapper");
+        const canvas = document.getElementById(
+            "travel-canvas",
+        ) as HTMLCanvasElement | null;
+
+        const mIntro = document.getElementById("milestone-intro");
+        const mInteractivo = document.getElementById("milestone-interactivo");
+        const m360 = document.getElementById("milestone-360");
+        const mWebgl = document.getElementById("milestone-webgl");
+        const mTextures = document.getElementById("milestone-textures");
+        const mCero = document.getElementById("milestone-cero");
+
+        if (!pinWrapper || !canvas) return;
+
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+
+        // 100 fotogramas completos de /recorrido/ (animación completa de inicio a fin)
+        const TOTAL_FRAMES = 100;
+        // 50px de scroll por fotograma: 5,000px de recorrido total (ritmo pausado y cinematográfico)
+        const SCROLL_PER_FRAME = 50;
+
+        const frames: (HTMLImageElement | null)[] = new Array(
+            TOTAL_FRAMES + 1,
+        ).fill(null);
+        const frameStatus = new Uint8Array(TOTAL_FRAMES + 1);
+
+        let currentRenderedIndex = 1;
+
+        function getFramePath(idx: number): string {
+            const padded = String(idx).padStart(3, "0");
+            return `/recorrido/${padded}.png`;
+        }
+
+        // Dibuja una imagen centrada con object-fit: cover en el canvas
+        function renderImageCover(img: HTMLImageElement) {
+            if (!canvas || !ctx) return;
+            const cw = canvas.width;
+            const ch = canvas.height;
+            const iw = img.naturalWidth || 1280;
+            const ih = img.naturalHeight || 720;
+
+            const hRatio = cw / iw;
+            const vRatio = ch / ih;
+            const ratio = Math.max(hRatio, vRatio);
+
+            const nw = iw * ratio;
+            const nh = ih * ratio;
+            const cx = (cw - nw) / 2;
+            const cy = (ch - nh) / 2;
+
+            ctx.clearRect(0, 0, cw, ch);
+            ctx.drawImage(img, cx, cy, nw, nh);
+        }
+
+        function requestFrame(idx: number, highPriority = false) {
+            if (idx < 1 || idx > TOTAL_FRAMES || frameStatus[idx] !== 0) return;
+            frameStatus[idx] = 1;
+
+            const img = new Image();
+            if (highPriority) {
+                (img as any).fetchPriority = "high";
+            }
+            img.src = getFramePath(idx);
+            img.onload = () => {
+                frames[idx] = img;
+                frameStatus[idx] = 2;
+                if (Math.abs(currentRenderedIndex - idx) <= 1) {
+                    renderImageCover(img);
+                }
+            };
+            img.onerror = () => {
+                frameStatus[idx] = 0;
+            };
+        }
+
+        // Renderiza el fotograma solicitado y garantiza carga inmediata
+        function drawFrame(index: number) {
+            currentRenderedIndex = index;
+
+            requestFrame(index, true);
+            for (let i = 1; i <= 4; i++) {
+                requestFrame(index + i, false);
+                requestFrame(index - i, false);
+            }
+
+            const target = frames[index];
+            if (target && target.complete && target.naturalWidth > 0) {
+                renderImageCover(target);
+                return;
+            }
+
+            // Fallback: fotograma cargado más cercano
+            let best: HTMLImageElement | null = null;
+            for (let delta = 1; delta < TOTAL_FRAMES; delta++) {
+                const prev = index - delta;
+                if (
+                    prev >= 1 &&
+                    frames[prev]?.complete &&
+                    (frames[prev]?.naturalWidth || 0) > 0
+                ) {
+                    best = frames[prev];
+                    break;
+                }
+                const next = index + delta;
+                if (
+                    next <= TOTAL_FRAMES &&
+                    frames[next]?.complete &&
+                    (frames[next]?.naturalWidth || 0) > 0
+                ) {
+                    best = frames[next];
+                    break;
+                }
+            }
+            if (best) {
+                renderImageCover(best);
+            }
+        }
+
+        function resizeCanvas() {
+            if (!canvas) return;
+            const rect = canvas.getBoundingClientRect();
+            if (rect.width === 0 || rect.height === 0) return;
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            drawFrame(currentRenderedIndex);
+        }
+
+        // 1. Cargar inmediatamente el primer frame
+        requestFrame(1, true);
+
+        // 2. Precargar progresivamente los 100 frames en segundo plano
+        function preloadAllFrames() {
+            for (let i = 2; i <= TOTAL_FRAMES; i++) {
+                requestFrame(i);
+            }
+        }
+
+        if ("requestIdleCallback" in window) {
+            (window as any).requestIdleCallback(() => preloadAllFrames());
+        } else {
+            setTimeout(preloadAllFrames, 100);
+        }
+
+        window.addEventListener("resize", resizeCanvas, { passive: true });
+        resizeCanvas();
+
+        ScrollTrigger.getAll().forEach((st) => {
+            if ((st.vars as any).id === "travel-scroll-pin") {
+                st.kill();
+            }
+        });
+
+        const MILESTONES = {
+            interactivo: { start: 5, fadeInEnd: 8, fadeOutStart: 21, end: 24 },
+            vista360: { start: 25, fadeInEnd: 28, fadeOutStart: 46, end: 49 },
+            webgl: { start: 50, fadeInEnd: 53, fadeOutStart: 62, end: 65 },
+            textures: { start: 66, fadeInEnd: 69, fadeOutStart: 77, end: 80 },
+            cero: { start: 81, fadeInEnd: 78, fadeOutStart: 96, end: 99 },
+        };
+
+        function setMilestone(
+            element: HTMLElement | null,
+            frame: number,
+            config: {
+                start: number;
+                fadeInEnd: number;
+                fadeOutStart: number;
+                end: number;
+            },
+        ) {
+            if (!element) return;
+            let timeout: ReturnType<typeof setTimeout> | null = null;
+            if (timeout) {
+                clearTimeout(timeout);
+                timeout = null;
+            }
+
+            const { start, fadeInEnd, fadeOutStart, end } = config;
+
+            if (frame < start || frame > end) {
+                element.style.opacity = "0";
+                element.style.transform = "translateY(16px) scale(0.94)";
+                return;
+            }
+
+            let opacity = 1;
+            let translateY = 0;
+            let scale = 1;
+            let isVisible = true;
+
+            if (frame < fadeInEnd) {
+                // Entrada suave
+                const p = (frame - start) / (fadeInEnd - start);
+                opacity = p;
+                translateY = 16 * (1 - p);
+                scale = 0.94 + 0.06 * p;
+                isVisible = true;
+            } else if (frame > fadeOutStart) {
+                // Salida suave antes del siguiente hito
+                const p = (frame - fadeOutStart) / (end - fadeOutStart);
+                opacity = 1 - p;
+                translateY = -12 * p;
+                scale = 1 - 0.06 * p;
+                isVisible = false;
+            }
+
+            element.style.opacity = opacity.toFixed(3);
+            element.style.transform = `translateY(${translateY.toFixed(1)}px) scale(${scale.toFixed(3)})`;
+
+            timeout = setTimeout(() => {
+                element.classList.toggle("hidden", !isVisible);
+            }, 300);
+        }
+
+        function updateMilestones(frame: number) {
+            // Intro: visible al inicio, desaparece en el frame 5
+            if (mIntro) {
+                if (frame <= 2) {
+                    mIntro.style.opacity = "1";
+                    mIntro.style.transform = "translateY(0) scale(1)";
+                } else if (frame <= 4) {
+                    const p = (frame - 2) / 2;
+                    mIntro.style.opacity = (1 - p).toFixed(3);
+                    mIntro.style.transform = `translateY(${-12 * p}px) scale(${1 - 0.06 * p})`;
+                } else {
+                    mIntro.style.opacity = "0";
+                    mIntro.style.transform = "translateY(-12px) scale(0.94)";
+                }
+            }
+
+            setMilestone(mInteractivo, frame, MILESTONES.interactivo);
+
+            setMilestone(m360, frame, MILESTONES.vista360);
+
+            setMilestone(mWebgl, frame, MILESTONES.webgl);
+
+            setMilestone(mTextures, frame, MILESTONES.textures);
+
+            setMilestone(mCero, frame, MILESTONES.cero);
+        }
+
+        // TIMELINE DE GSAP CON SCROLLTRIGGER
+        const playhead = { frame: 1 };
+
+        const travelTimeline = gsap.timeline({
+            id: "travel-scroll-pin",
+            scrollTrigger: {
+                id: "travel-scroll-pin",
+                trigger: pinWrapper,
+                start: "center center",
+                end: `+=${TOTAL_FRAMES * SCROLL_PER_FRAME}`,
+                pin: true,
+                scrub: 0.8,
+                anticipatePin: 1,
+            },
+        });
+
+        travelTimeline.to(
+            playhead,
+            {
+                frame: TOTAL_FRAMES,
+                ease: "none",
+                duration: 1,
+                onUpdate: () => {
+                    const fNum = Math.min(
+                        TOTAL_FRAMES,
+                        Math.max(1, Math.round(playhead.frame)),
+                    );
+
+                    // 1. Renderiza el fotograma correspondiente
+                    drawFrame(fNum);
+
+                    // 2. Actualiza los hitos en paralelo con ese mismo fotograma exacto
+                    updateMilestones(fNum);
+                },
+            },
+            0,
+        );
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initTravelScroll);
+    } else {
+        initTravelScroll();
+    }
+    document.addEventListener("astro:page-load", initTravelScroll);
+</script>
