@@ -11,14 +11,6 @@ import node from '@astrojs/node';
 export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
-    
   },
-
-  
-
   integrations: [preact()],
-
-  adapter: node({
-    mode: 'standalone'
-  })
 });
