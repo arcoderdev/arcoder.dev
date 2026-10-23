@@ -11,41 +11,11 @@ import { desiredTime, inputRangeData } from "@data/input-select-data"
 import { servicesInterestData } from "@data/services-data"
 import { validateField } from '@utils/formValidation'
 import SuccessMessage from './SuccessMessage'
-
-export interface PhoneData {
-    lada: string
-    number: string
-}
-
-export interface ContactFormData {
-    fullname: string
-    email: string
-    phone: PhoneData
-    company: string
-    services_interest: string[]
-    project_description: string
-    min_budget: string
-    desired_time: string
-    privacy: boolean
-}
+import { initialFormData, type ContactFormData } from '@interfaces/contact.interface'
+import { sendForm } from "@emailjs/browser"
 
 type FormErrors = Partial<Record<keyof ContactFormData, string>>
 type TouchedFields = Partial<Record<keyof ContactFormData, boolean>>
-
-const initialFormData: ContactFormData = {
-    fullname: '',
-    email: '',
-    phone: {
-        lada: '+52',
-        number: ''
-    },
-    company: '',
-    services_interest: [],
-    project_description: '',
-    min_budget: '',
-    desired_time: '',
-    privacy: false
-}
 
 export default function ContactForm({ className }: { className?: string }) {
     const [formData, setFormData] = useState<ContactFormData>(initialFormData)
@@ -140,12 +110,17 @@ export default function ContactForm({ className }: { className?: string }) {
         }
 
         setIsSubmitting(true)
+        const form = e.currentTarget
 
         try {
-            // Simular envío o integración
-            await new Promise(resolve => setTimeout(resolve, 1200))
+            const PUBLIC_SERVICE_ID = import.meta.env.PUBLIC_SERVICE_ID
+            const PUBLIC_TEMPLATE_ID = import.meta.env.PUBLIC_TEMPLATE_ID
+            const PUBLIC_KEY = import.meta.env.PUBLIC_KEY
+
+            // Enviar datos
+            await sendForm(PUBLIC_SERVICE_ID, PUBLIC_TEMPLATE_ID, form, { publicKey: PUBLIC_KEY })
+
             setIsSubmittedSuccess(true)
-            console.log("DATOS DEL FORMULARIO:", formData)
             setFormData(initialFormData)
             setErrors({})
             setTouched({})
