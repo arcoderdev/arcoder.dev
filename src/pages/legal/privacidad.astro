@@ -1,0 +1,114 @@
+---
+import ContentPrivacy from "@components/sections/privacidad/ContentPrivacy.astro";
+import HeadingPrivacy from "@components/sections/privacidad/HeadingPrivacy.astro";
+import Navigation from "@components/sections/privacidad/Navigation.astro";
+import ShadowsPrivacy from "@components/sections/privacidad/ShadowsPrivacy.astro";
+import Main from "@layouts/Main.astro";
+import { ArrowUp } from "@lucide/astro";
+---
+
+<Main title="ARcoder | Política de Privacidad">
+  <ShadowsPrivacy />
+
+  <section>
+    <div class="mx-auto max-w-360 px-6 2xl:px-0 pt-11 text-white lg:pt-24">
+      <HeadingPrivacy
+        title="Política de privacidad"
+        description="En ARcoder.dev respetamos tu privacidad. En esta página te explicamos qué datos tratamos cuando nos contactas y para qué los utilizamos."
+        date="22 de octubre de 2026"
+      />
+
+      <div
+        class="grid items-start gap-6 lg:grid-cols-[300px_minmax(0,1fr)] lg:gap-8"
+      >
+        <aside
+          id="contenido-privacidad"
+          class="rounded-2xl border border-white/10 bg-white/3 p-5 md:p-6 lg:sticky lg:top-8 backdrop-blur-md"
+        >
+          <h2 class="mb-4 text-lg font-semibold text-blue-page-100">
+            Contenido
+          </h2>
+          <Navigation />
+        </aside>
+
+        <article
+          class="min-w-0 rounded-2xl border border-white/10 bg-white/2 p-5 md:p-8 lg:p-10 backdrop-blur-md"
+        >
+          <ContentPrivacy />
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <button
+    type="button"
+    aria-label="Volver al índice de privacidad"
+    title="Volver al índice"
+    hidden
+    class="fixed bottom-6 right-6 z-50 rounded-full border border-blue-page-300/40 bg-blue-page-700 p-3 text-white shadow-lg backdrop-blur-md transition-colors hover:bg-blue-page-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-page-100 md:hidden cursor-pointer"
+    data-back-to-index
+  >
+    <ArrowUp size={20} aria-hidden="true" />
+  </button>
+</Main>
+
+<script>
+  const privacyIndexLinks = document.querySelectorAll<HTMLAnchorElement>(
+    '#contenido a[href^="#"]',
+  );
+
+  function updateActivePrivacySection() {
+    const activeHash = window.location.hash;
+
+    privacyIndexLinks.forEach((link) => {
+      const isActive = link.hash === activeHash;
+      const sectionId = decodeURIComponent(link.hash.slice(1));
+      const section = document.getElementById(sectionId);
+
+      if (isActive) {
+        link.setAttribute("aria-current", "location");
+        section?.setAttribute("data-active", "true");
+      } else {
+        link.removeAttribute("aria-current");
+        section?.removeAttribute("data-active");
+      }
+    });
+  }
+
+  window.addEventListener("hashchange", updateActivePrivacySection);
+  updateActivePrivacySection();
+
+  const backToIndexButton = document.querySelector<HTMLButtonElement>(
+    "[data-back-to-index]",
+  );
+  const privacyIndex = document.getElementById("contenido-privacidad");
+
+  function updateBackToIndexVisibility() {
+    if (backToIndexButton) {
+      backToIndexButton.hidden = window.scrollY < 320;
+    }
+  }
+
+  window.addEventListener("scroll", updateBackToIndexVisibility, {
+    passive: true,
+  });
+
+  updateBackToIndexVisibility();
+
+  backToIndexButton?.addEventListener("click", () => {
+    privacyIndex?.scrollIntoView({ block: "start" });
+  });
+</script>
+
+<style>
+  :global(html) {
+    scroll-behavior: smooth;
+    scroll-padding-top: 7rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(html) {
+      scroll-behavior: auto;
+    }
+  }
+</style>

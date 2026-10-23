@@ -33,7 +33,7 @@ export default function PrivacyField({
                     class="accent-blue-page-300 size-4 cursor-pointer rounded disabled:cursor-not-allowed not-disabled:cursor-pointer"
                 />
                 <p class="text-xs md:text-sm text-white/90">
-                    He leído y acepto la <a href="/privacidad" class="underline hover:text-blue-page-100 transition-colors">Política de privacidad.</a>
+                    He leído y acepto la <a href="/legal/privacidad" class="underline hover:text-blue-page-100 transition-colors">Política de privacidad.</a>
                 </p>
             </label>
             {error && (

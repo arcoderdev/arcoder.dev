@@ -1,0 +1,17 @@
+---
+import { Image } from "astro:assets";
+import blobSrc from "@assets/projects/blob.svg";
+---
+
+<div class="absolute inset-0 w-full h-full overflow-x-clip -z-[2]">
+  <Image
+    src={blobSrc}
+    alt="Blob 1"
+    class="absolute aspect-364/464 w-[364px] h-auto top-100 -left-30 z-[-2] pointer-events-none select-none blur-[150px]"
+  />
+  <Image
+    src={blobSrc}
+    alt="Blob 2"
+    class="absolute aspect-364/464 w-[364px] top-500 lg:top-300 -right-50 h-auto z-[-2] pointer-events-none select-none blur-[150px]"
+  />
+</div>

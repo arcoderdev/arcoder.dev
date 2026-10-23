@@ -97,3 +97,8 @@ body {
 .radialImage {
   background: radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0.00) 0%, #101014 100%);
 }
+
+#contenido a[aria-current="location"] {
+    background-color: rgb(255 255 255 / 0.08);
+    color: var(--color-blue-page-100);
+}
