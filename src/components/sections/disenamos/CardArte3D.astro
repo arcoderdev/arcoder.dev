@@ -5,12 +5,13 @@ import CardBase from "./CardBase.astro";
 interface Props {
   title: string;
   description: string;
+  id?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, id } = Astro.props;
 ---
 
-<CardBase title={title} description={description}>
+<CardBase id={id} title={title} description={description}>
   <ModelViewer
     id="arte-3d-model"
     src="/models/jicara/JicaraModel.glb"

@@ -4,13 +4,15 @@ import Heading from "@components/ui/Heading.astro";
 interface Props {
     title: string;
     description: string;
+    id?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, id = '#' } = Astro.props;
 ---
 
 <article
     class="disenamos-card relative w-full sm:min-h-140 lg:max-h-165.5 lg:min-h-165 shrink-0 flex flex-col justify-between"
+    id={id}
 >
     <div
         class="disenamos-media-container w-full h-[50%] sm:h-95 lg:h-138.25 flex items-center justify-center overflow-hidden aspect-square"

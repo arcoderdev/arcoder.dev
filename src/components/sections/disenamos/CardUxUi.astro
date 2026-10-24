@@ -5,12 +5,13 @@ import CardBase from "./CardBase.astro";
 interface Props {
   title: string;
   description: string;
+  id?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, id } = Astro.props;
 ---
 
-<CardBase title={title} description={description}>
+<CardBase id={id} title={title} description={description}>
   <div
     class="disenamos-uxui-mockup relative mt-12 lg:mt-0 w-full max-w-md aspect-578/800 flex items-center justify-center"
   >

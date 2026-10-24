@@ -26,6 +26,7 @@ import { cardData } from "@data/card-data.ts";
             cardData.map((card: CardData, index: number) => (
                 <div
                     class="desarrollamos-card absolute inset-0 w-full h-full flex items-center justify-center"
+                    id={card.id}
                     data-bg-color={card.classColor}
                     data-index={index}
                 >
@@ -88,6 +89,8 @@ import { cardData } from "@data/card-data.ts";
                 },
             });
 
+            tl.addLabel("card-0", 0);
+
             // Animación secuencial: 1° Cambia el color del fondo -> 2° Entra el contenido
             cards.forEach((card, i) => {
                 if (i > 0) {
@@ -112,6 +115,9 @@ import { cardData } from "@data/card-data.ts";
                         }
                     }
 
+                    const revealStart = tl.duration();
+                    tl.addLabel(`card-${i}`, revealStart + 0.8);
+
                     // 2. POSTERIORMENTE: Aparece la nueva tarjeta y se desvanece la anterior
                     tl.to(
                         card,
@@ -121,7 +127,7 @@ import { cardData } from "@data/card-data.ts";
                             ease: "power2.out",
                             duration: 1,
                         },
-                        ">",
+                        revealStart,
                     );
 
                     tl.to(

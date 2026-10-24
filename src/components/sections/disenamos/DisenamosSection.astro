@@ -53,7 +53,7 @@ const cards = {
             const Card = cards[service.id];
             return (
               <div class="disenamos-slide h-fit">
-                <Card title={service.title} description={service.description} />
+                <Card id={service.id} title={service.title} description={service.description} />
               </div>
             );
           })
@@ -296,6 +296,12 @@ const cards = {
           onLeaveBack: () => videoEdicion?.pause(),
         },
       });
+
+      // Puntos de navegación dentro del pin para enlazar directamente a cada tarjeta.
+      mobileTimeline.addLabel("service-0", 0);
+      mobileTimeline.addLabel("service-1", 1.3);
+      mobileTimeline.addLabel("service-2", 2.9);
+      mobileTimeline.addLabel("service-3", 4.5);
 
       // 1. Animación Card 1: Rotación 360° del modelo 3D
       const rotationState = { angle: 0 };
