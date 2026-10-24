@@ -4,7 +4,24 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const PENDING_HASH_KEY = "arcoder:pending-hash-navigation";
+const MAX_NAVIGATION_ATTEMPTS = 400;
 let isSetup = false;
+
+function areHomeScrollTriggersReady(): boolean {
+  if (window.location.pathname !== "/") return true;
+
+  const pinnedSections = [
+    document.querySelector<HTMLElement>("#disenamos-section"),
+    document.querySelector<HTMLElement>("#desarrollamos-section"),
+  ].filter((section): section is HTMLElement => section !== null);
+
+  return (
+    pinnedSections.length === 2 &&
+    pinnedSections.every((section) =>
+      ScrollTrigger.getAll().some((trigger) => trigger.trigger === section),
+    )
+  );
+}
 
 function getTimelineLabelProgress(
   trigger: ScrollTrigger,
@@ -74,6 +91,15 @@ function navigateToHash(attempt = 0) {
   const target = document.getElementById(targetId);
   if (!target) return;
 
+  // Home has two pinned GSAP sections. Their spacers affect the offsets of
+  // every later section, so wait for both triggers before measuring any hash.
+  if (!areHomeScrollTriggersReady()) {
+    if (attempt < MAX_NAVIGATION_ATTEMPTS) {
+      window.setTimeout(() => navigateToHash(attempt + 1), 25);
+    }
+    return;
+  }
+
   const designSection = target.closest<HTMLElement>("#disenamos-section");
   const developCard = target.closest<HTMLElement>(".desarrollamos-card");
   const gsapSection =
@@ -81,7 +107,10 @@ function navigateToHash(attempt = 0) {
     developCard?.closest<HTMLElement>("#desarrollamos-section");
 
   if (!gsapSection) {
-    target.scrollIntoView({ behavior: scrollBehavior, block: "start" });
+    ScrollTrigger.refresh();
+    requestAnimationFrame(() =>
+      target.scrollIntoView({ behavior: scrollBehavior, block: "start" }),
+    );
     return;
   }
 
@@ -90,7 +119,7 @@ function navigateToHash(attempt = 0) {
   );
 
   if (!trigger) {
-    if (attempt < 80) {
+    if (attempt < MAX_NAVIGATION_ATTEMPTS) {
       window.setTimeout(() => navigateToHash(attempt + 1), 25);
     }
     return;
@@ -215,6 +244,8 @@ export function setupHashNavigation() {
   } else {
     scheduleHashNavigation();
   }
+
+  window.addEventListener("load", scheduleHashNavigation, { once: true });
 
   window.addEventListener("hashchange", scheduleHashNavigation);
   document.addEventListener("astro:page-load", scheduleHashNavigation);
