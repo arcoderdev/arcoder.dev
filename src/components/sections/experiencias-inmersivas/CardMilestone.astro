@@ -13,14 +13,14 @@ const { id, title, description, className, color } = Astro.props;
 <div
     id={id}
     class:list={[
-        "milestone-card flex flex-col items-center gap-2 text-center",
+        "milestone-card absolute flex flex-col items-center gap-2 text-center",
         className,
     ]}
 >
     <div
-        class="px-4 py-2.5 rounded-xl bg-black/10 md:bg-black/20 backdrop-blur-lg border border-white/15 shadow-2xl"
+        class="px-4 py-2.5 rounded-xl bg-black/20 md:bg-black/30 backdrop-blur-lg border border-white/15 shadow-2xl"
     >
-        <h4 class="text-sm font-semibold" style={`color: ${color};`}>
+        <h4 class="text-xs md:text-sm font-semibold" style={`color: ${color};`}>
             {title}
         </h4>
         <p class="text-white/80 text-xs mt-0.5 leading-snug">
@@ -28,3 +28,19 @@ const { id, title, description, className, color } = Astro.props;
         </p>
     </div>
 </div>
+
+<style>
+    .milestone-card {
+        will-change: transform, opacity;
+    }
+
+    @media (max-width: 767px) {
+        .milestone-card {
+            inset: 0;
+            height: max-content;
+            margin: auto;
+            width: calc(100% - 2rem);
+            max-width: 20rem;
+        }
+    }
+</style>

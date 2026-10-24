@@ -19,7 +19,7 @@ import CardMilestone from "./CardMilestone.astro";
         >
             <div
                 id="milestone-intro"
-                class="milestone-card flex flex-col items-center gap-2 text-center"
+                class="milestone-card absolute flex flex-col items-center gap-2 text-center"
             >
                 <div
                     class="px-3.5 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-white text-xs font-medium shadow-2xl flex items-center gap-2"
@@ -84,7 +84,6 @@ import CardMilestone from "./CardMilestone.astro";
 
 <style>
     .milestone-card {
-        position: absolute;
         will-change: transform, opacity;
     }
 </style>
