@@ -99,16 +99,3 @@ import { ArrowUp } from "@lucide/astro";
     privacyIndex?.scrollIntoView({ block: "start" });
   });
 </script>
-
-<style>
-  :global(html) {
-    scroll-behavior: smooth;
-    scroll-padding-top: 7rem;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    :global(html) {
-      scroll-behavior: auto;
-    }
-  }
-</style>
