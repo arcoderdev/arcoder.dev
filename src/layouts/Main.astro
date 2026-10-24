@@ -15,22 +15,60 @@ import Footer from "@components/layout/Footer.astro";
 
 interface Props {
   title: string;
+  description: string;
+  ogImage: string;
 }
 
 const isHome = Astro.url.pathname === "/";
-
-const { title } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const { title, description, ogImage } = Astro.props;
+const ogImageURL = new URL(ogImage, Astro.site);
 ---
 
 <!doctype html>
 <html lang="es-MX">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="description" content={description} />
+    <meta
+      name="keywords"
+      content="desarrollo web, software a medida, diseño UX/UI, arte 3D, recorridos virtuales, realidad aumentada, realidad virtual, experiencias inmersivas, ARcoder.dev, Tabasco, Tab. Mx, México"
+    />
     <title>{title}</title>
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_MX" />
+    <meta property="og:site_name" content="ARcoder.dev" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:alt" content={title} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="ARcoder.dev" />
+    <meta name="twitter:creator" content="ARcoder.dev" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
+
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href={ogImageURL} />
+
+    <!-- Robots -->
+    <meta name="robots" content="index, follow" />
+
+    <!-- Googlebot -->
+    <meta name="googlebot" content="index, follow" />
+
+    <!-- Sitemap -->
+    <link rel="sitemap" href="/sitemap-index.xml" />
   </head>
   <body class="relative">
     <Header variant={isHome ? "primary" : "secondary"} />
