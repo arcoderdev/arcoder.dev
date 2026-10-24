@@ -3,6 +3,7 @@ import { Monitor, TabletSmartphone, Shield, MonitorSmartphone, Zap, Box, Gamepad
 
 export const cardData: CardData[] = [
     {
+        id: "software-a-la-medida",
         imageSrc: "/desarrollamos/software.webp",
         details: [
             { icon: Monitor, labelText: "Apps para escritorio" },
@@ -14,6 +15,7 @@ export const cardData: CardData[] = [
         classColor: "#062543"
     },
     {
+        id: "paginas-web",
         imageSrc: "/desarrollamos/paginas-web.webp",
         details: [
             { icon: Zap, labelText: "Carga instantánea" },
@@ -26,6 +28,7 @@ export const cardData: CardData[] = [
         classColor: "#063B70"
     },
     {
+        id: "realidad-aumentada-y-virtual",
         imageSrc: "/desarrollamos/ra-vr.webp",
         details: [
             { icon: Box, labelText: "Gráficos 3D de alta fidelidad" },

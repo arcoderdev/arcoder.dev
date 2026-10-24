@@ -8,6 +8,7 @@ export interface Details {
 }
 
 export interface CardData {
+    id?: string;
     /** Imagen de la tarjeta */
     imageSrc: string;
     /** Detalles: icono y texto */
