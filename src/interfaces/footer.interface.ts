@@ -21,4 +21,5 @@ export interface FooterData {
     website_tagline: string;
     navigation_items: NavigationItem[];
     social_links: SocialLink[];
+    extra_links?: PageLink[];
 }

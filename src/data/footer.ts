@@ -11,11 +11,11 @@ export const footerContent: FooterData = {
             "pages_links": [
                 {
                     "display_name": "Quiénes somos",
-                    "url": "#"
+                    "url": "/about"
                 },
                 {
                     "display_name": "Nuestro equipo",
-                    "url": "#"
+                    "url": "/about#team"
                 }
             ]
         },
@@ -24,31 +24,31 @@ export const footerContent: FooterData = {
             "pages_links": [
                 {
                     "display_name": "Arte 3D",
-                    "url": "#"
+                    "url": "/#arte3D"
                 },
                 {
                     "display_name": "Diseño de experiencia",
-                    "url": "#"
+                    "url": "/#uxUi"
                 },
                 {
                     "display_name": "Recorridos virtuales",
-                    "url": "#"
+                    "url": "/#recorridos"
                 },
                 {
                     "display_name": "Edición de imágenes y videos",
-                    "url": "#"
+                    "url": "/#edicion"
                 },
                 {
                     "display_name": "Software a la medida",
-                    "url": "#"
+                    "url": "/#software-a-la-medida"
                 },
                 {
                     "display_name": "Páginas Web",
-                    "url": "#"
+                    "url": "/#paginas-web"
                 },
                 {
                     "display_name": "Implementación de realidad aumentada y virtual",
-                    "url": "#"
+                    "url": "/#realidad-aumentada-y-virtual"
                 }
             ]
         },
@@ -57,15 +57,15 @@ export const footerContent: FooterData = {
             "pages_links": [
                 {
                     "display_name": "Inicio",
-                    "url": "#"
+                    "url": "/"
                 },
                 {
                     "display_name": "Nuestro portafolio",
-                    "url": "#"
+                    "url": "/projects"
                 },
                 {
                     "display_name": "Agenda tu sesión",
-                    "url": "#"
+                    "url": "/#contact-section"
                 }
             ]
         },
@@ -93,6 +93,12 @@ export const footerContent: FooterData = {
             "display_name": "ARcoder",
             "url": "https://www.instagram.com/arcoder.dev/",
             "icon": InstagramIcon
+        }
+    ],
+    "extra_links": [
+        {
+            "display_name": "Privacidad",
+            "url": "/legal/privacy"
         }
     ]
 }
