@@ -65,7 +65,7 @@ export const footerContent: FooterData = {
                 },
                 {
                     "display_name": "Agenda tu sesión",
-                    "url": "/#contact-section"
+                    "url": "#contact-section"
                 }
             ]
         },
