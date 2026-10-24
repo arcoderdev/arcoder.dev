@@ -9,7 +9,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://arcoder.dev",
+  site: "https://arcoder-dev-git-website-oficial-adrianhdez2s-projects.vercel.app",
   vite: {
     plugins: [tailwindcss()],
   },
