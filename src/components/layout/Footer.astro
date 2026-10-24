@@ -10,6 +10,9 @@ const {
   social_links,
   extra_links,
 } = footerContent;
+const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
+const hasLocalContactForm =
+  currentPath === "/" || currentPath === "/experiencias-inmersivas";
 ---
 
 <footer class="bg-blue-page-900">
@@ -61,7 +64,11 @@ const {
                 {section.pages_links.map((link) => (
                   <li class="">
                     <a
-                      href={link.url}
+                      href={
+                        link.url === "#contact-section" && !hasLocalContactForm
+                          ? "/#contact-section"
+                          : link.url
+                      }
                       class="text-base font-normal hover:underline hover:text-blue-page-100 transition ease-in duration-150"
                       title={link.display_name}
                     >
