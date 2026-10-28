@@ -91,7 +91,7 @@ const hasLocalContactForm =
           {
             social_links.map(({ display_name, icon: Icon, url }) => (
               <li>
-                <a href={url} class="" title={display_name}>
+                <a href={url} target="_blank" rel="noopener noreferrer" class="" title={display_name}>
                   <Icon class="w-8 h-8 fill-current text-white opacity-50 hover:opacity-100 transition-opacity duration-300 ease-in" />
                 </a>
               </li>
