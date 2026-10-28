@@ -16,10 +16,10 @@ const cards = {
 
 <section
   id="disenamos-section"
-  class="relative w-full min-h-dvh overflow-hidden py-8 xl:py-16 flex flex-col justify-start"
+  class="relative w-full min-h-svh overflow-hidden py-8 xl:py-16 flex flex-col justify-center"
 >
   <div
-    class="disenamos-container w-full max-w-360 mx-auto px-6 2xl:px-0 flex flex-col"
+    class="disenamos-container w-full max-w-360 mx-auto gap-4 px-6 2xl:px-0 flex flex-col"
   >
     <header
       class="disenamos-header flex flex-col md:flex-row items-start justify-start gap-3"
@@ -471,11 +471,11 @@ const cards = {
   }
 
   /* Optimización para Landscape en móviles y pantallas de poca altura */
-  @media (orientation: landscape) and (max-height: 600px), (max-height: 520px) {
+  @media (orientation: landscape) and (max-height: 760px), (max-height: 520px) {
     #disenamos-section {
       padding-top: 1rem !important;
       padding-bottom: 1rem !important;
-      min-height: 100dvh !important;
+      min-height: 100svh !important;
       justify-content: center !important;
     }
 

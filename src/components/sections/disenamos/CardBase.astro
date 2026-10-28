@@ -28,7 +28,7 @@ const { title, description, id = '#' } = Astro.props;
 </article>
 
 <style>
-    @media (orientation: landscape) and (max-height: 600px),
+    @media (orientation: landscape) and (max-height: 760px),
         (max-height: 520px) {
         .disenamos-card {
             min-height: auto !important;
@@ -42,10 +42,10 @@ const { title, description, id = '#' } = Astro.props;
         }
 
         .disenamos-media-container {
-            height: min(190px, 48vh) !important;
-            width: min(190px, 48vh) !important;
-            max-height: 48vh !important;
-            max-width: 48vh !important;
+            height: min(46svh, 360px) !important;
+            width: min(46svh, 360px) !important;
+            max-height: 46svh !important;
+            max-width: 46svh !important;
             aspect-ratio: 1 / 1 !important;
             margin: 0 auto !important;
         }
@@ -55,7 +55,7 @@ const { title, description, id = '#' } = Astro.props;
             top: auto !important;
             left: auto !important;
             width: 100% !important;
-            max-width: min(220px, 50vw) !important;
+            max-width: min(360px, 70vw) !important;
             height: auto !important;
             margin-top: 0.35rem !important;
             pointer-events: auto !important;
@@ -71,6 +71,15 @@ const { title, description, id = '#' } = Astro.props;
         .disenamos-heading-container :global(p) {
             font-size: 0.6875rem !important;
             line-height: 0.875rem !important;
+        }
+    }
+
+    @media (max-height: 520px) {
+        .disenamos-media-container {
+            height: min(34svh, 280px) !important;
+            width: min(34svh, 280px) !important;
+            max-height: 34svh !important;
+            max-width: 34svh !important;
         }
     }
 </style>
