@@ -1,24 +1,17 @@
 ---
 import { Image } from "astro:assets";
 import { Menu } from "@lucide/astro";
+import MenuMobile from "./MenuMobile.astro";
 
 interface Props {
   variant: "primary" | "secondary";
 }
 
 const items = [
-  {
-    href: "/",
-    label: "Inicio",
-  },
-  {
-    href: "/projects",
-    label: "Proyectos",
-  },
-  {
-    href: "/about",
-    label: "Nosotros",
-  },
+  { href: "/", label: "Inicio" },
+  { href: "/projects", label: "Proyectos" },
+  { href: "/about", label: "Nosotros" },
+  { href: "/experiencias-inmersivas", label: "Experiencias Inmersivas" },
 ];
 
 const variantClass = {
@@ -47,10 +40,10 @@ const hasLocalContactForm =
       alt="Logo de ARcoder.dev"
       width={69}
       height={41}
-      class={"aspect-69/41 w-12 h-8 md:w-14 md:h-8.25 lg:w-17.25 lg:h-10.25"}
+      class={"aspect-69/41 w-12 h-8 lg:w-14 lg:h-8.25 lg:w-17.25 lg:h-10.25"}
     />
   </a>
-  <nav class="hidden md:block">
+  <nav class="hidden lg:block">
     <ul class="flex gap-8">
       {
         items.map((item, index) => (
@@ -74,12 +67,21 @@ const hasLocalContactForm =
     <a
       href={hasLocalContactForm ? "#contact-section" : "/#contact-section"}
       class:list={[
-        "px-3 py-2 md:px-5 md:py-3 rounded-full text-sm md:text-base font-medium text-center transition duration-500 ease-in-out",
+        "px-3 py-2 lg:px-5 lg:py-3 rounded-full text-sm lg:text-base font-medium text-center transition duration-500 ease-in-out",
         variantClass[variant],
       ]}>Hablemos de tu proyecto</a
     >
-    <button class="cursor-pointer md:hidden">
-      <Menu class="stroke-white size-6 md:size-8 transition-all transform" />
+    <button
+      id="menu-button"
+      type="button"
+      class="cursor-pointer lg:hidden"
+      aria-label="Abrir menú de navegación"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+    >
+      <Menu class="stroke-white size-6 lg:size-8 transition-all transform" />
     </button>
   </div>
 </header>
+
+<MenuMobile currentPath={formattedPathname} />

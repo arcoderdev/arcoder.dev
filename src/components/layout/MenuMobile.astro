@@ -1,0 +1,308 @@
+---
+import { ArrowRight, X } from "@lucide/astro";
+import { Image } from "astro:assets";
+import { footerContent } from "@data/footer";
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+const { social_links } = footerContent;
+
+const items = [
+  { href: "/", label: "Inicio" },
+  { href: "/projects", label: "Proyectos" },
+  { href: "/about", label: "Nosotros" },
+  { href: "/experiencias-inmersivas", label: "Experiencias inmersivas" },
+];
+---
+
+<div
+  id="mobile-menu"
+  class="fixed inset-0 z-[100] min-h-dvh overflow-y-auto bg-[#1b191a] text-white lg:hidden"
+  data-state="closed"
+  aria-hidden="true"
+  inert
+  hidden
+>
+  <div class="mx-auto flex min-h-dvh w-full flex-col px-6 pb-8 pt-6 sm:px-8">
+    <div class="flex items-center justify-between">
+      <a href="/" aria-label="ARcoder.dev, ir al inicio">
+        <Image
+          src="/arcoder-logo.svg"
+          alt="Logo de ARcoder.dev"
+          width={42}
+          height={25}
+          class="h-6 w-auto"
+        />
+      </a>
+      <button
+        id="menu-close-button"
+        type="button"
+        class="-mr-2 rounded-full p-2 text-white transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-page-300"
+        aria-label="Cerrar menú de navegación"
+      >
+        <X class="size-6" />
+      </button>
+    </div>
+
+    <div class="mt-9 sm:mt-12">
+      <svg
+        viewBox="0 0 1000 125"
+        class="w-full h-auto select-none"
+        aria-label={"ARCODER.DEV"}
+      >
+        <defs>
+          <linearGradient
+            id="arcoderMenuBrandGradient"
+            x1="0"
+            y1="0"
+            x2="1000"
+            y2="0"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop
+              class="arcoder-gradient-stop-1"
+              offset="0%"
+              stop-color="#90CAF9"></stop>
+            <stop
+              class="arcoder-gradient-stop-2"
+              offset="45%"
+              stop-color="#42A5F5"></stop>
+            <stop
+              class="arcoder-gradient-stop-3"
+              offset="100%"
+              stop-color="#1976D2"></stop>
+          </linearGradient>
+        </defs>
+        <text
+          x="0"
+          y="95"
+          textLength="100%"
+          lengthAdjust="spacing"
+          fill="url(#arcoderMenuBrandGradient)"
+          class="font-bold uppercase font-['Poppins']"
+          font-size="120"
+          letter-spacing="0"
+        >
+          {"ARCODER.DEV"}
+        </text>
+      </svg>
+      <p
+        class="mt-3 max-w-sm text-sm leading-relaxed text-white/80 sm:text-base"
+      >
+        Donde la visión digital se convierte en realidad
+      </p>
+    </div>
+
+    <nav class="mt-8" aria-label="Navegación principal">
+      <ul class="border-t border-white/5">
+        {
+          items.map((item) => {
+            const isCurrent =
+              currentPath === item.href || currentPath === `${item.href}/`;
+
+            return (
+              <li class="border-b border-white/5">
+                <a
+                  href={item.href}
+                  aria-current={isCurrent ? "page" : undefined}
+                  class:list={[
+                    "group flex min-h-12 items-center justify-between gap-4 py-3 text-base font-normal transition-colors hover:text-blue-page-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-page-300 sm:text-lg uppercase",
+                    isCurrent && "text-blue-page-100",
+                  ]}
+                >
+                  <span>{item.label}</span>
+                  <ArrowRight class="size-5 shrink-0 opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100 group-focus-visible:opacity-100" />
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+
+    <ul class="mt-auto flex items-center justify-start gap-5 pt-10">
+      {
+        social_links.map(({ display_name, icon: Icon, url }) => (
+          <li>
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Visitar en ${display_name}`}
+              title={`Visitar en ${display_name}`}
+              class="block rounded-full text-white/70 transition-opacity hover:text-blue-page-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-page-300"
+            >
+              <Icon class="size-8 md:size-12 fill-current" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>
+
+<style>
+  #mobile-menu {
+    --menu-origin-x: calc(100% - 36px);
+    --menu-origin-y: 40px;
+    clip-path: circle(0 at var(--menu-origin-x) var(--menu-origin-y));
+    transition: clip-path 650ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: clip-path;
+  }
+
+  #mobile-menu[data-state="open"] {
+    clip-path: circle(150vmax at var(--menu-origin-x) var(--menu-origin-y));
+  }
+
+  #mobile-menu[data-state="closed"] {
+    pointer-events: none;
+  }
+
+  @keyframes blue-tone-cycle {
+    0%,
+    100% {
+      stop-color: #90caf9;
+    }
+
+    33.333% {
+      stop-color: #42a5f5;
+    }
+
+    66.667% {
+      stop-color: #1976d2;
+    }
+  }
+
+  .arcoder-gradient-stop-1,
+  .arcoder-gradient-stop-2,
+  .arcoder-gradient-stop-3 {
+    animation: blue-tone-cycle 9s ease-in-out infinite;
+  }
+
+  .arcoder-gradient-stop-2 {
+    animation-delay: -3s;
+  }
+
+  .arcoder-gradient-stop-3 {
+    animation-delay: -6s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #mobile-menu {
+      transition-duration: 1ms;
+      will-change: auto;
+    }
+
+    .arcoder-gradient-stop-1,
+    .arcoder-gradient-stop-2,
+    .arcoder-gradient-stop-3 {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const menu = document.querySelector<HTMLElement>("#mobile-menu");
+  const menuButton = document.querySelector<HTMLButtonElement>("#menu-button");
+  const closeButton =
+    document.querySelector<HTMLButtonElement>("#menu-close-button");
+
+  if (menu && menuButton && closeButton) {
+    let closeTimer: number | undefined;
+
+    const hideMenuAfterTransition = (event: TransitionEvent) => {
+      if (
+        event.target === menu &&
+        event.propertyName === "clip-path" &&
+        menu.dataset.state === "closed"
+      ) {
+        menu.hidden = true;
+      }
+    };
+
+    menu.addEventListener("transitionend", hideMenuAfterTransition);
+
+    const closeMenu = (restoreFocus = true) => {
+      if (menu.hidden) return;
+
+      menu.dataset.state = "closed";
+      menu.setAttribute("aria-hidden", "true");
+      menu.inert = true;
+      menuButton.setAttribute("aria-expanded", "false");
+      document.body.classList.remove("overflow-hidden");
+
+      window.clearTimeout(closeTimer);
+      closeTimer = window.setTimeout(() => {
+        menu.hidden = true;
+      }, 700);
+
+      if (restoreFocus) menuButton.focus();
+    };
+
+    const openMenu = () => {
+      window.clearTimeout(closeTimer);
+      const menuBounds = menu.getBoundingClientRect();
+      const buttonBounds = menuButton.getBoundingClientRect();
+      menu.style.setProperty(
+        "--menu-origin-x",
+        `${buttonBounds.left + buttonBounds.width / 2 - menuBounds.left}px`,
+      );
+      menu.style.setProperty(
+        "--menu-origin-y",
+        `${buttonBounds.top + buttonBounds.height / 2 - menuBounds.top}px`,
+      );
+      menu.hidden = false;
+      menu.inert = false;
+      menu.setAttribute("aria-hidden", "false");
+      menuButton.setAttribute("aria-expanded", "true");
+      document.body.classList.add("overflow-hidden");
+      menu.dataset.state = "closed";
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          menu.dataset.state = "open";
+        });
+      });
+      closeButton.focus();
+    };
+
+    menuButton.addEventListener("click", openMenu);
+    closeButton.addEventListener("click", () => closeMenu());
+
+    menu.addEventListener("click", (event) => {
+      if ((event.target as HTMLElement).closest("a")) closeMenu(false);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (menu.hidden) return;
+
+      if (event.key === "Escape") {
+        closeMenu();
+        return;
+      }
+
+      if (event.key === "Tab") {
+        const focusableElements = menu.querySelectorAll<HTMLElement>(
+          "a[href], button:not([disabled])",
+        );
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (event.shiftKey && document.activeElement === firstElement) {
+          event.preventDefault();
+          lastElement?.focus();
+        } else if (!event.shiftKey && document.activeElement === lastElement) {
+          event.preventDefault();
+          firstElement?.focus();
+        }
+      }
+    });
+
+    const desktopMedia = window.matchMedia("(min-width: 1024px)");
+    desktopMedia.addEventListener("change", (event) => {
+      if (event.matches && !menu.hidden) closeMenu(false);
+    });
+  }
+</script>
