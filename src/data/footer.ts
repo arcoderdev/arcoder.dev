@@ -1,5 +1,6 @@
 import { type FooterData } from "@interfaces/footer.interface";
 import FacebookIcon from "@icons/FacebookIcon.svg";
+import GitHubIcon from "@icons/GitHubIcon.svg";
 import InstagramIcon from "@icons/InstagramIcon.svg";
 
 export const footerContent: FooterData = {
@@ -64,6 +65,10 @@ export const footerContent: FooterData = {
                     "url": "/projects"
                 },
                 {
+                    "display_name": "Experiencias inmersivas",
+                    "url": "/experiencias-inmersivas"
+                },
+                {
                     "display_name": "Agenda tu sesión",
                     "url": "#contact-section"
                 }
@@ -85,12 +90,17 @@ export const footerContent: FooterData = {
     ],
     "social_links": [
         {
-            "display_name": "ARcoder",
+            "display_name": "Github | ARcoder",
+            "url": "https://github.com/arcoderdev",
+            "icon": GitHubIcon
+        },
+        {
+            "display_name": "Facebook | ARcoder",
             "url": "https://www.facebook.com/arcoder.dev",
             "icon": FacebookIcon
         },
         {
-            "display_name": "ARcoder",
+            "display_name": "Instagram | ARcoder",
             "url": "https://www.instagram.com/arcoder.dev/",
             "icon": InstagramIcon
         }
