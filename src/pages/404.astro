@@ -1,0 +1,64 @@
+---
+import Main from "@layouts/Main.astro";
+import ModelViewer from "@components/ui/ModelViewer.astro";
+---
+
+<Main
+  title="Página no encontrada | ARcoder.dev"
+  description="La dirección que buscas no existe o ya no está disponible. Vuelve al inicio y descubre ARcoder.dev."
+  ogImage="/og/home.webp"
+>
+  <section
+    class="relative isolate flex min-h-[calc(100svh-5rem)] items-center justify-center overflow-hidden py-12 text-center text-white sm:py-16"
+    aria-labelledby="not-found-title"
+  >
+    <div
+      class="mx-auto flex w-full max-w-360 flex-col items-center px-6 2xl:px-0"
+    >
+      <div class="relative w-full max-w-5xl">
+        <span
+          aria-hidden="true"
+          class="pointer-events-none absolute left-1/2 top-[38%] z-0 -translate-x-1/2 -translate-y-1/2 bg-linear-to-b from-blue-page-100/80 via-blue-page-300/45 to-blue-page-500/10 bg-clip-text text-[clamp(10rem,36vw,34rem)] font-bold tracking-[-0.08em] text-transparent select-none"
+        >
+          404
+        </span>
+
+        <div
+          class="relative z-10 mx-auto aspect-square w-full max-w-[min(72vw,34rem)]"
+        >
+          <ModelViewer
+            src="/models/error/Error.glb"
+            alt="Modelo 3D decorativo de la página no encontrada"
+            className="h-full w-full"
+            cameraControls={false}
+            autoRotate={true}
+            ar={false}
+            shadowIntensity="1.2"
+            exposure="1.1"
+            loading="eager"
+          />
+        </div>
+      </div>
+
+      <div
+        class="relative z-10 -mt-2 flex max-w-2xl flex-col items-center sm:-mt-6"
+      >
+        <h1
+          id="not-found-title"
+          class="text-2xl font-semibold tracking-tight sm:text-3xl lg:text-4xl"
+        >
+          No encontramos esta página
+        </h1>
+        <p class="mt-3 text-sm leading-relaxed text-white/65 sm:text-base">
+          La dirección puede haber cambiado o ya no estar disponible.
+        </p>
+        <a
+          href="/"
+          class="mt-7 inline-flex items-center justify-center gap-2 rounded-full bg-blue-page-900 px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-page-800 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-page-700 sm:text-base"
+        >
+          Volver al inicio
+        </a>
+      </div>
+    </div>
+  </section>
+</Main>
