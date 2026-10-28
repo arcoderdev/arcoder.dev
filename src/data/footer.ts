@@ -1,6 +1,6 @@
 import { type FooterData } from "@interfaces/footer.interface";
 import FacebookIcon from "@icons/FacebookIcon.svg";
-import GitHubIcon from "@icons/GitHubIcon.svg";
+import GitHubIcon from "@icons/GithubIcon.svg";
 import InstagramIcon from "@icons/InstagramIcon.svg";
 
 export const footerContent: FooterData = {
